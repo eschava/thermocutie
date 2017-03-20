@@ -1,0 +1,9 @@
+Current temperature: <span>{{CurrentState.state.currentTemperature}} *C</span><br/>
+Target temperature: <span>{{CurrentState.state.targetMode.temperature}} *C</span><br/>
+Target mode: <span>
+    <md-icon ng-if="CurrentState.state.targetMode.icon" md-menu-origin md-svg-src="icons/cumulus/{{CurrentState.state.targetMode.icon}}.svg"></md-icon>
+    {{CurrentState.state.targetMode.name}}
+</span><br/>
+
+<br/><br/><br/>
+<md-button class="md-primary" href="settings">Settings</md-button>

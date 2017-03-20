@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Settings>
+    <CurrentTemperature mqttBroker="internal" mqttTopic="thermocutie/default/current_temperature"/>
+    <TargetTemperature mqttBroker="internal" mqttTopic="thermocutie/default/target_temperature"/>
+    <TargetMode mqttBroker="internal" mqttTopic="thermocutie/default/target_mode"/>
+</Settings>

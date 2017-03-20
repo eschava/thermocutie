@@ -1,0 +1,1 @@
+java -cp "lib/*" org.eclipse.jetty.start.Main --include-jetty-dir=web/WEB-INF -Dlogback.configurationFile=conf/logback.xml -Djetty.http.port=8080

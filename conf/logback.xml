@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<!-- -Dlogback.configurationFile=conf/logback.xml -->
+<configuration>
+    <logger name="org.eclipse.jetty" level="WARN"/>
+    <logger name="io.netty" level="WARN"/>
+    <logger name="io.moquette" level="WARN"/>
+    <logger name="messageLogger" level="WARN"/>
+
+    <root level="ALL">
+        <appender class="ch.qos.logback.core.ConsoleAppender" >
+            <encoder>
+                <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+            </encoder>
+        </appender>
+    </root>
+</configuration>

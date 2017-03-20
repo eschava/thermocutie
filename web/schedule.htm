@@ -1,0 +1,113 @@
+<style>
+    td {
+        border-bottom: 1px solid black;
+    }
+
+    .schedule-cell {
+        -webkit-user-select: none; /* webkit (safari, chrome) browsers */
+        -moz-user-select: none; /* mozilla browsers */
+        -khtml-user-select: none; /* webkit (konqueror) browsers */
+        -ms-user-select: none; /* IE10+ */
+    }
+
+    .splitter-cell {
+        cursor: col-resize;
+        width: 5px;
+        background-color: black;
+    }
+
+    .disabled-cell {
+        cursor: default;
+        -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=30)";       /* IE 8 */
+        filter: alpha(opacity=30);  /* IE 5-7 */
+        -moz-opacity: 0.3;          /* Netscape */
+        -khtml-opacity: 0.3;        /* Safari 1.x */
+        opacity: 0.3;               /* Good browsers */
+    }
+
+    md-select {
+        margin: 0;
+        width: 100px;
+    }
+</style>
+
+<table ng-repeat="(dayNumber, day) in schedule"
+       ng-if="day.name"
+       ng-mousemove="handleMove($event)"
+       ng-touchmove="handleMove($event)"
+       ng-touchend="handleUp()"
+       cellpadding="0"
+       cellspacing="0"
+>
+    <!-- ng-if="!day.disabled" -->
+    <tr style="height:48px;">
+        <td style="width: 100px">
+            {{day.name}}
+        </td>
+        <td class="schedule-cell"
+            ng-attr-style="width: {{getWidth(day, -1, null)}}px; background-color: {{getStartDayColor(dayNumber)}};"
+        >
+        </td>
+        <td ng-repeat-start="period in day.periods"
+            class="splitter-cell"
+            ng-mousedown="handleDown($event, period, day.periods[$index-1], day.periods[$index+1])"
+            ng-touchstart="handleDown($event, period, day.periods[$index-1], day.periods[$index+1])"
+            ng-mouseover="showTooltip($event, period)"
+            ng-mouseout="hideTooltip()"
+        >
+        </td>
+        <td ng-repeat-end
+            class="schedule-cell"
+            ng-attr-style="width: {{getWidth(day, $index, period)}}px; background-color: {{getModeColor(period.mode)}};"
+            ng-dblclick="openMenu(period, day, $index)"
+            ng-touchend="handleTouch(period, day, $index)"
+            title="{{getPeriodTitle(day, period, $index)}}"
+        >
+        </td>
+        <td>
+            <md-select ng-model="day.set" aria-label="Mode" ng-change="onModeChanged(day, '{{day.set}}')" class="md-no-underline">
+                <md-option ng-repeat="set in daySets" ng-value="set.name">
+                    {{set.name}}
+                    <md-button ng-click="renameSet(set);" class="md-icon-button" ng-if="set.name == day.set">
+                        <md-icon md-svg-src="icons/material/edit.svg" aria-label="Rename"></md-icon>
+                    </md-button>
+                </md-option>
+                <md-option value="<new>"><b>New...</b></md-option>
+            </md-select>
+        </td>
+    </tr>
+</table>
+
+<br/>
+<md-button ng-click="back()">Back</md-button>
+<md-button ng-click="update()" class="md-primary">Update</md-button>
+
+<!-- utility elements -->
+<md-menu>
+    <md-button id="changeModeMenu" ng-click="$mdMenu.open($event)" style="position:fixed; visibility:hidden;">Click</md-button>
+    <md-menu-content width="2">
+        <md-menu-item ng-repeat="mode in modes" ng-attr-style="color:{{mode.color}};">
+            <md-button ng-style="mode.name == currentModeName ? {'font-weight': 'bold'} : {}"
+                       ng-click="chooseMode(mode);">
+                <md-icon md-menu-origin md-svg-src="icons/cumulus/{{mode.icon}}.svg"></md-icon>
+                {{mode.name}}
+            </md-button>
+        </md-menu-item>
+        <md-menu-divider></md-menu-divider>
+        <md-menu-item>
+            <md-button ng-click="splitPeriod()">
+                Split
+            </md-button>
+        </md-menu-item>
+        <md-menu-item>
+            <md-button ng-href="temperaturemode">
+                Mode editor
+            </md-button>
+        </md-menu-item>
+    </md-menu-content>
+</md-menu>
+
+<md-button id="timeTooltipButton" style="position:fixed; visibility:hidden;">
+    <md-tooltip id="timeTooltip" md-visible="timeTooltipVisible" md-direction="left">{{timeTooltipText}}</md-tooltip>
+    Text
+</md-button>

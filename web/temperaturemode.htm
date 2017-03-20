@@ -1,0 +1,15 @@
+<table>
+    <tr ng-repeat="mode in modes">
+        <td width="24" style="background-color:{{mode.color}}">&nbsp;</td>
+        <td><md-icon md-menu-origin md-svg-src="icons/cumulus/{{mode.icon}}.svg"></md-icon></td>
+        <td>{{mode.name}}</td>
+        <td>{{mode.temperature}}</td>
+        <td><md-button ng-click="edit(mode)">Edit</md-button></td>
+        <td><md-button ng-click="rename(mode)">Rename</md-button></td>
+        <td><md-button ng-click="delete(mode)">Delete</md-button></td>
+    </tr>
+</table>
+
+<md-button ng-click="add()">Add</md-button>
+
+<md-button ng-click="back()">Back</md-button>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Schedules>
+    <Schedule name="default" type="week">
+        <DaySet days="Mon-Fri" name="Workday">
+            <Period mode="Home" start="06:00"/>
+            <Period mode="Work" start="09:00"/>
+            <Period mode="Home" start="18:00"/>
+            <Period mode="Sleep" start="23:00"/>
+        </DaySet>
+        <DaySet days="Sat-Sun" name="Weekend">
+            <Period mode="Home" start="08:00"/>
+            <Period mode="Sleep" start="23:00"/>
+        </DaySet>
+    </Schedule>
+</Schedules>

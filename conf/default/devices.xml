@@ -1,0 +1,5 @@
+<?xml version="1.0"?>
+<Devices>
+	<TemperatureSensor name="Temperature" mqttBroker="internal" mqttTopic="temperature" />
+	<HVAC name="HVAC" mqttBroker="internal" mqttTopic="hvac" mqttOnCommand="ON" mqttOffCommand="OFF" />
+</Devices>

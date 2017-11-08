@@ -89,7 +89,7 @@
         <md-menu-item ng-repeat="mode in modes" ng-attr-style="color:{{mode.color}};">
             <md-button ng-style="mode.name == currentModeName ? {'font-weight': 'bold'} : {}"
                        ng-click="chooseMode(mode);">
-                <md-icon md-menu-origin md-svg-src="icons/cumulus/{{mode.icon}}.svg"></md-icon>
+                <md-icon md-menu-origin md-svg-src="/icons/cumulus/{{mode.icon}}.svg"></md-icon>
                 {{mode.name}}
             </md-button>
         </md-menu-item>

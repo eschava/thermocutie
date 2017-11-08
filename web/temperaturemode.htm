@@ -1,7 +1,7 @@
 <table>
     <tr ng-repeat="mode in modes">
         <td width="24" style="background-color:{{mode.color}}">&nbsp;</td>
-        <td><md-icon md-menu-origin md-svg-src="icons/cumulus/{{mode.icon}}.svg"></md-icon></td>
+        <td><md-icon md-menu-origin md-svg-src="/icons/cumulus/{{mode.icon}}.svg"></md-icon></td>
         <td>{{mode.name}}</td>
         <td>{{mode.temperature}}</td>
         <td><md-button ng-click="edit(mode)">Edit</md-button></td>

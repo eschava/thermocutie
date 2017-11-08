@@ -1,10 +1,21 @@
 <?xml version="1.0"?>
 <!DOCTYPE Configure PUBLIC "-//Jetty//Configure//EN" "http://www.eclipse.org/jetty/configure_9_3.dtd">
 <Configure id="Rewrite" class="org.eclipse.jetty.rewrite.handler.RuleContainer">
+    <!-- If page contains system name (like /default/settings) - redirect to the base page (/settings)-->
     <Call name="addRule">
         <Arg>
             <New class="org.eclipse.jetty.rewrite.handler.RewriteRegexRule">
-                <Set name="regex">^/(?!.*(state))[a-z]+</Set>
+                <Set name="regex">^/(?!.*(state|rest|js|icons|bower_components))[a-z]+/([a-z]+)/?$</Set>
+                <Set name="replacement">/$2</Set>
+            </New>
+        </Arg>
+    </Call>
+
+    <!-- Every page (except /state) should go to the / -->
+    <Call name="addRule">
+        <Arg>
+            <New class="org.eclipse.jetty.rewrite.handler.RewriteRegexRule">
+                <Set name="regex">^/(?!.*(state))[a-z]+/?$</Set>
                 <Set name="replacement">/</Set>
                 <Set name="terminating">true</Set>
             </New>

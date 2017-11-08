@@ -1,13 +1,15 @@
-app.controller('SystemController', function ($scope, $window, $mdDialog, SystemService) {
+app.controller('SystemController', function ($scope, $window, $routeParams, $mdDialog, SystemService) {
     $scope.back = function() {$window.history.back();}
 
     $scope.systems = SystemService.getSystems()
+
+    $scope.currentSystem = $routeParams.system != null ? $routeParams.system : 'default'
 
     $scope.add = function() {
         $mdDialog.show({
           controller: EditSystemController,
           locals: { system: {} },
-          templateUrl: 'systemedit.htm',
+          templateUrl: '/systemedit.htm',
           parent: angular.element(document.body),
           //targetEvent: ev,
           clickOutsideToClose:false
@@ -51,6 +53,10 @@ app.controller('SystemController', function ($scope, $window, $mdDialog, SystemS
                 alert(r.data || "Error");
             });
         });
+    }
+
+    $scope.switch = function(system) {
+        $window.location.href = '/' + system.name + '/'; // not $location.url to reload the page
     }
 
     function EditSystemController($scope, $mdDialog, system) {

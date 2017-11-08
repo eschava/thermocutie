@@ -99,7 +99,8 @@ public class ThermoSystem {
     public void setSchedule(ISchedule schedule) {
         if (this.schedule != null)
             this.schedule.removeTargetTemperatureModeListener(targetTemperatureModeListener);
-        schedule.addTargetTemperatureModeListener(targetTemperatureModeListener);
+        if (schedule != null)
+            schedule.addTargetTemperatureModeListener(targetTemperatureModeListener);
         this.schedule = schedule;
     }
 

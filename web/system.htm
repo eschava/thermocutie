@@ -9,8 +9,9 @@
     <tr ng-repeat="system in systems">
         <td>{{system.name}}</td>
         <td>{{system.title}}</td>
+        <td><md-button ng-click="switch(system)" ng-disabled="system.name == currentSystem">Switch to it</md-button></td>
         <td><md-button ng-click="rename(system)">Rename</md-button></td>
-        <td><md-button ng-click="delete(system)" ng-disabled="$index == 0">Delete</md-button></td>
+        <td><md-button ng-click="delete(system)" ng-disabled="system.name == currentSystem">Delete</md-button></td>
     </tr>
 </table>
 

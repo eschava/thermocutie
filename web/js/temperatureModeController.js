@@ -1,5 +1,5 @@
-app.controller('TemperatureModeController', function ($scope, $window, $mdDialog, TemperatureModeService) {
-    $scope.modes = TemperatureModeService.getModes({system: 'default'});
+app.controller('TemperatureModeController', function ($scope, $window, $routeParams, $mdDialog, TemperatureModeService) {
+    $scope.modes = TemperatureModeService.getModes({system: $routeParams.system});
 
     $scope.back = function() {$window.history.back();}
 
@@ -7,14 +7,14 @@ app.controller('TemperatureModeController', function ($scope, $window, $mdDialog
         $mdDialog.show({
           controller: EditModeController,
           locals: { mode: {} },
-          templateUrl: 'temperaturemodeedit.htm',
+          templateUrl: '/temperaturemodeedit.htm',
 //          contentElement: '#editModeDialog',
           parent: angular.element(document.body),
           //targetEvent: ev,
           clickOutsideToClose:false
         })
         .then(function(mode) {
-            TemperatureModeService.add({system: 'default'}, mode, function() {
+            TemperatureModeService.add({system: $routeParams.system}, mode, function() {
                 $scope.modes.push(mode);
             }, function(r) {
                 alert(r.data || "Error");
@@ -26,7 +26,7 @@ app.controller('TemperatureModeController', function ($scope, $window, $mdDialog
         $mdDialog.show({
           controller: EditModeController,
           locals: { mode: angular.copy(mode) },
-          templateUrl: 'temperaturemodeedit.htm',
+          templateUrl: '/temperaturemodeedit.htm',
 //          contentElement: '#editModeDialog',
           parent: angular.element(document.body),
           //targetEvent: ev,
@@ -34,7 +34,7 @@ app.controller('TemperatureModeController', function ($scope, $window, $mdDialog
           skipHide: true
         })
         .then(function(changedMode) {
-            TemperatureModeService.update({system: 'default'}, changedMode, function() {
+            TemperatureModeService.update({system: $routeParams.system}, changedMode, function() {
                 angular.copy(changedMode, mode);
             }, function(r) {
                 alert(r.data || "Error");
@@ -51,7 +51,7 @@ app.controller('TemperatureModeController', function ($scope, $window, $mdDialog
           .cancel('Cancel');
 
         $mdDialog.show(confirm).then(function(newName) {
-            TemperatureModeService.rename({system: 'default', oldName: mode.name, newName: newName}, function() {
+            TemperatureModeService.rename({system: $routeParams.system, oldName: mode.name, newName: newName}, function() {
                 mode.name = newName;
             }, function(r) {
               alert(r.data || "Error");
@@ -66,7 +66,7 @@ app.controller('TemperatureModeController', function ($scope, $window, $mdDialog
             .cancel('Cancel');
 
         $mdDialog.show(confirm).then(function() {
-            TemperatureModeService.delete({system: 'default', name: mode.name}, function() {
+            TemperatureModeService.delete({system: $routeParams.system, name: mode.name}, function() {
                 $scope.modes.splice($scope.modes.indexOf(mode), 1);
             }, function(r) {
                 alert(r.data || "Error");

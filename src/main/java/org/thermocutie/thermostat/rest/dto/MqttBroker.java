@@ -1,4 +1,4 @@
-package org.thermocutie.thermostat.rest;
+package org.thermocutie.thermostat.rest.dto;
 
 /**
  * DTO for MQTT connection settings

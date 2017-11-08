@@ -1,4 +1,4 @@
-package org.thermocutie.thermostat.rest;
+package org.thermocutie.thermostat.rest.serializer;
 
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.map.DeserializationContext;

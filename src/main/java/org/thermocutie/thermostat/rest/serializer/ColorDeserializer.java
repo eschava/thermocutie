@@ -1,9 +1,8 @@
-package org.thermocutie.thermostat.rest;
+package org.thermocutie.thermostat.rest.serializer;
 
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.map.DeserializationContext;
 import org.codehaus.jackson.map.JsonDeserializer;
-import org.thermocutie.thermostat.model.Temperature;
 import org.thermocutie.thermostat.util.StringConverterUtil;
 
 import java.awt.*;

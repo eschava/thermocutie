@@ -15,7 +15,7 @@ app.controller('TemperatureModeController', function ($scope, $window, $mdDialog
         })
         .then(function(mode) {
             TemperatureModeService.add({system: 'default'}, mode, function() {
-                $scope.modes.append(mode);
+                $scope.modes.push(mode);
             }, function(r) {
                 alert(r.data || "Error");
             });

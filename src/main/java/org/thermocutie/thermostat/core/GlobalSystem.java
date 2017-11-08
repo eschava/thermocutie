@@ -1,9 +1,11 @@
 package org.thermocutie.thermostat.core;
 
 import org.thermocutie.thermostat.core.ThermoSystemSettings.TemperaturePublisher;
-import org.thermocutie.thermostat.mqtt.*;
+import org.thermocutie.thermostat.mqtt.IMqttListener;
+import org.thermocutie.thermostat.mqtt.IMqttPublisher;
+import org.thermocutie.thermostat.mqtt.MqttSystem;
+import org.thermocutie.thermostat.mqtt.XmlPublisher;
 
-import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 
 /**
@@ -14,13 +16,15 @@ public class GlobalSystem {
 
     public static final GlobalSystem INSTANCE = new GlobalSystem();
 
+    private File configFolder;
+
     private GlobalSystem() {
     }
 
     private MqttSystem mqttSystem;
 
-    public void load() throws ParserConfigurationException {
-        File configFolder = new File("conf");
+    public void load() {
+        configFolder = new File("conf");
 
         ThermoSystemRegistry.loadFromFolder(configFolder);
 
@@ -73,7 +77,11 @@ public class GlobalSystem {
         return mqttSystem;
     }
 
-    public static void main(String[] args) throws ParserConfigurationException {
+    public File getConfigFolder() {
+        return configFolder;
+    }
+
+    public static void main(String[] args) {
         GlobalSystem globalSystem = new GlobalSystem();
         globalSystem.load();
         globalSystem.start();

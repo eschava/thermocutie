@@ -35,6 +35,11 @@ public class MqttSystem implements IXmlFilePersistableHelper {
     private Map<String, MqttClient> clientMap = new LinkedHashMap<>();
 
     @Override
+    public String getRootTag() {
+        return "MQTT";
+    }
+
+    @Override
     public void setFile(File file) {
         this.file = file;
     }

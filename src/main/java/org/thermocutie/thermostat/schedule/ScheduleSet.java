@@ -36,6 +36,11 @@ public class ScheduleSet implements IXmlFilePersistableHelper {
     }
 
     @Override
+    public String getRootTag() {
+        return "Schedules";
+    }
+
+    @Override
     public void setFile(File file) {
         this.file = file;
     }

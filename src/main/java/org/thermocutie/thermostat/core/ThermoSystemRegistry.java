@@ -42,9 +42,12 @@ public class ThermoSystemRegistry {
     }
 
     public static synchronized ThermoSystem get(String name) {
-        ThermoSystem thermoSystem = INSTANCE.thermoSystemMap.get(name);
-        if (thermoSystem == null)
-            thermoSystem = INSTANCE.thermoSystemMap.values().iterator().next(); // TODO: temp
-        return thermoSystem;
+        if (name == null)
+            return INSTANCE.thermoSystemMap.values().iterator().next(); // TODO: temp
+        return INSTANCE.thermoSystemMap.get(name);
+    }
+
+    public static synchronized void remove(String name) {
+        INSTANCE.thermoSystemMap.remove(name);
     }
 }

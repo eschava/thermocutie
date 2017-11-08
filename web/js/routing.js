@@ -8,6 +8,10 @@ app.config(function($routeProvider, $locationProvider) {
         templateUrl : "settings.htm",
         controller : "SettingsController"
     })
+    .when("/system", {
+        templateUrl : "system.htm",
+        controller : "SystemController"
+    })
     .when("/devices", {
         templateUrl : "devices.htm",
         controller : "DevicesController"

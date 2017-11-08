@@ -1,5 +1,7 @@
 package org.thermocutie.thermostat.core;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.thermocutie.thermostat.listener.ITemperatureListener;
 import org.thermocutie.thermostat.model.Temperature;
 import org.thermocutie.thermostat.mqtt.XmlPublisher;
@@ -14,11 +16,19 @@ import java.io.File;
  * @author Eugene Schava <eschava@gmail.com>
  */
 public class ThermoSystemSettings implements IXmlFilePersistableHelper {
+    private final static Logger LOGGER = LoggerFactory.getLogger(ThermoSystemSettings.class);
+
     private File file;
+    private String title;
 
     private TemperaturePublisher currentTemperaturePublisher;
     private TemperaturePublisher targetTemperaturePublisher;
     private XmlPublisher targetModePublisher;
+
+    @Override
+    public String getRootTag() {
+        return "Settings";
+    }
 
     @Override
     public File getFile() {
@@ -28,6 +38,14 @@ public class ThermoSystemSettings implements IXmlFilePersistableHelper {
     @Override
     public void setFile(File file) {
         this.file = file;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public TemperaturePublisher getCurrentTemperaturePublisher() {
@@ -44,6 +62,8 @@ public class ThermoSystemSettings implements IXmlFilePersistableHelper {
 
     @Override
     public void loadFromXml(Element element) {
+        title = element.getAttribute("title");
+
         childElements(element).forEach(childElement -> {
             switch (childElement.getTagName()) {
                 case "CurrentTemperature":
@@ -65,7 +85,25 @@ public class ThermoSystemSettings implements IXmlFilePersistableHelper {
 
     @Override
     public void saveToXml(Element element) {
-        throw new UnsupportedOperationException();
+        element.setAttribute("title", title);
+
+        childElements(element).forEach(childElement -> {
+            String tagName = childElement.getTagName();
+            switch (tagName) {
+                case "CurrentTemperature":
+                    currentTemperaturePublisher.saveToXml(childElement);
+                    break;
+                case "TargetTemperature":
+                    targetTemperaturePublisher.saveToXml(childElement);
+                    break;
+                case "TargetMode":
+                    targetModePublisher.saveToXml(childElement);
+                    break;
+                default:
+                    LOGGER.error("Element " + tagName + " cannot be child for " + element.getTagName());
+                    break;
+            }
+        });
     }
 
     public static class TemperaturePublisher extends XmlPublisher implements ITemperatureListener {

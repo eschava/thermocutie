@@ -3,6 +3,8 @@ package org.thermocutie.thermostat.rest;
 import org.thermocutie.thermostat.core.GlobalSystem;
 import org.thermocutie.thermostat.mqtt.MqttClient;
 import org.thermocutie.thermostat.mqtt.MqttSystem;
+import org.thermocutie.thermostat.rest.dto.MqttBroker;
+import org.thermocutie.thermostat.rest.dto.MqttServer;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;

@@ -1,5 +1,6 @@
 package org.thermocutie.thermostat.xml;
 
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -28,6 +29,8 @@ public interface IXmlFilePersistableHelper extends IXmlFilePersistable {
 
     File getFile();
 
+    String getRootTag();
+
     @Override
     default void loadFromFile() {
         File file = getFile();
@@ -36,12 +39,16 @@ public interface IXmlFilePersistableHelper extends IXmlFilePersistable {
             try (FileInputStream is = new FileInputStream(file)) {
                 Document doc = DOCUMENT_BUILDER.parse(is);
                 Element root = doc.getDocumentElement();
+                // validation
+                if (!root.getTagName().equals(getRootTag()))
+                    getLogger().warn("Root element of file {} should be {}", file, getRootTag());
+
                 loadFromXml(root);
             } catch (Exception e) {
-                LoggerFactory.getLogger(getClass()).error("File {} loading error", file, e);
+                getLogger().error("File {} loading error", file, e);
             }
         } else {
-            LoggerFactory.getLogger(getClass()).error("File {} doesn't exist", file);
+            getLogger().debug("File {} doesn't exist", file);
         }
     }
 
@@ -55,9 +62,14 @@ public interface IXmlFilePersistableHelper extends IXmlFilePersistable {
             if (file.exists()) {
                 try (FileInputStream is = new FileInputStream(file)) {
                     doc = DOCUMENT_BUILDER.parse(is);
+
+                    // validation
+                    if (!doc.getDocumentElement().getTagName().equals(getRootTag()))
+                        getLogger().warn("Root element of file {} should be {}", file, getRootTag());
                 }
             } else {
                 doc = DOCUMENT_BUILDER.newDocument();
+                doc.appendChild(doc.createElement(getRootTag()));
             }
             saveToXml(doc.getDocumentElement());
 
@@ -67,7 +79,7 @@ public interface IXmlFilePersistableHelper extends IXmlFilePersistable {
                 TRANSFORMER.transform(source, result);
             }
         } catch (Exception e) {
-            LoggerFactory.getLogger(getClass()).error("{} file saving error", file, e);
+            getLogger().error("{} file saving error", file, e);
         }
     }
 
@@ -92,5 +104,9 @@ public interface IXmlFilePersistableHelper extends IXmlFilePersistable {
             LoggerFactory.getLogger(IXmlFilePersistable.class).error("XML error", e);
             return null;
         }
+    }
+
+    default Logger getLogger() {
+        return LoggerFactory.getLogger(getClass());
     }
 }

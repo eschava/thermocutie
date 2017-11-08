@@ -1,5 +1,6 @@
 package org.thermocutie.thermostat.core;
 
+import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.thermocutie.thermostat.device.DeviceSet;
@@ -13,6 +14,7 @@ import org.thermocutie.thermostat.schedule.ISchedule;
 import org.thermocutie.thermostat.schedule.ScheduleSet;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Collection;
 
 /**
@@ -52,6 +54,17 @@ public class ThermoSystem {
         } catch (Exception e) {
             LOGGER.error("Thermo system loading error", e);
         }
+    }
+
+    public void save() {
+        settings.saveToFile();
+        deviceSet.saveToFile();
+        temperatureModeRegistry.saveToFile();
+        scheduleSet.saveToFile();
+    }
+
+    public void remove() throws IOException {
+        FileUtils.deleteDirectory(folder);
     }
 
     public void start() {

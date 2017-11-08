@@ -48,7 +48,7 @@ public interface IXmlPersistable {
     default Stream<Element> childElements(Element element, String tagName) {
         return childElements(element)
                 .filter(childElement -> {
-                    if (!childElement.getTagName().equals(tagName)) {
+                    if (tagName != null && !childElement.getTagName().equals(tagName)) {
                         Logger logger = LoggerFactory.getLogger(getClass());
                         logger.error("Element " + childElement.getTagName() + " cannot be child for " + element.getTagName());
                         return false;

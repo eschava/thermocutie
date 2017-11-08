@@ -1,11 +1,10 @@
-package org.thermocutie.thermostat.rest;
+package org.thermocutie.thermostat.rest.serializer;
 
 import org.codehaus.jackson.JsonGenerator;
 import org.codehaus.jackson.map.SerializerProvider;
 import org.codehaus.jackson.map.ser.std.SerializerBase;
 import org.thermocutie.thermostat.model.Temperature;
 
-import java.awt.*;
 import java.io.IOException;
 
 /**

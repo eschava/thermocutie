@@ -1,0 +1,19 @@
+<h1>Systems</h1>
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Title</th>
+        <th></th>
+        <th></th>
+    </tr>
+    <tr ng-repeat="system in systems">
+        <td>{{system.name}}</td>
+        <td>{{system.title}}</td>
+        <td><md-button ng-click="rename(system)">Rename</md-button></td>
+        <td><md-button ng-click="delete(system)" ng-disabled="$index == 0">Delete</md-button></td>
+    </tr>
+</table>
+
+<br/>
+<md-button ng-click="add()">Add</md-button>
+<md-button ng-click="back()">Back</md-button>

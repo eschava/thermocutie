@@ -24,6 +24,11 @@ public class TemperatureModeRegistry implements IXmlFilePersistableHelper {
     }
 
     @Override
+    public String getRootTag() {
+        return "TemperatureModes";
+    }
+
+    @Override
     public void setFile(File file) {
         this.file = file;
     }

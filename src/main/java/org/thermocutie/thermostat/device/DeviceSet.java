@@ -3,7 +3,6 @@ package org.thermocutie.thermostat.device;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.thermocutie.thermostat.xml.IXmlFilePersistableHelper;
-import org.thermocutie.thermostat.xml.IXmlPersistable;
 import org.w3c.dom.Element;
 
 import java.io.File;
@@ -23,6 +22,11 @@ public class DeviceSet implements IXmlFilePersistableHelper {
 
     private List<IDevice> deviceList = new ArrayList<>();
     private File file;
+
+    @Override
+    public String getRootTag() {
+        return "Devices";
+    }
 
     @Override
     public void setFile(File file) {
@@ -61,6 +65,10 @@ public class DeviceSet implements IXmlFilePersistableHelper {
     }
 
     public synchronized void saveToXml(Element element) {
+        // TODO: invent something better
+        while (element.getFirstChild() != null)
+            element.removeChild(element.getFirstChild());
+
         deviceList.forEach(device -> {
             String tagName = device.getClass().getSimpleName();
             Element deviceElement = element.getOwnerDocument().createElement(tagName);

@@ -3,10 +3,10 @@ package org.thermocutie.thermostat.core;
 import org.codehaus.jackson.map.annotate.JsonDeserialize;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.thermocutie.thermostat.model.Temperature;
-import org.thermocutie.thermostat.rest.ColorDeserializer;
-import org.thermocutie.thermostat.rest.ColorSerializer;
-import org.thermocutie.thermostat.rest.TemperatureDeserializer;
-import org.thermocutie.thermostat.rest.TemperatureSerializer;
+import org.thermocutie.thermostat.rest.serializer.ColorDeserializer;
+import org.thermocutie.thermostat.rest.serializer.ColorSerializer;
+import org.thermocutie.thermostat.rest.serializer.TemperatureDeserializer;
+import org.thermocutie.thermostat.rest.serializer.TemperatureSerializer;
 import org.thermocutie.thermostat.xml.IXmlPersistable;
 import org.w3c.dom.Element;
 
@@ -71,7 +71,8 @@ public class TemperatureMode implements IXmlPersistable {
     public void saveToXml(Element element) {
         element.setAttribute("name", name);
         element.setAttribute("temperature", String.valueOf(temperature.getValue()));
-        element.setAttribute("color", "#"+Integer.toHexString(color.getRGB()).substring(2));
+        if (color != null)
+            element.setAttribute("color", "#"+Integer.toHexString(color.getRGB()).substring(2));
         element.setAttribute("icon", icon);
     }
 }

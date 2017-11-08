@@ -1,9 +1,9 @@
-app.controller('SystemController', function ($scope, $window, $routeParams, $mdDialog, SystemService) {
+app.controller('SystemController', function ($scope, $window, CurrentSystemService, $mdDialog, SystemService) {
     $scope.back = function() {$window.history.back();}
 
     $scope.systems = SystemService.getSystems()
 
-    $scope.currentSystem = $routeParams.system != null ? $routeParams.system : 'default'
+    $scope.currentSystem = CurrentSystemService
 
     $scope.add = function() {
         $mdDialog.show({

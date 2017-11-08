@@ -1,5 +1,5 @@
-app.controller('DevicesController', function ($scope, $window, $routeParams, DevicesService) {
+app.controller('DevicesController', function ($scope, $window, CurrentSystemService, DevicesService) {
     $scope.back = function() {$window.history.back();}
 
-    $scope.devices = DevicesService.getDevices({system: $routeParams.system})
+    $scope.devices = DevicesService.getDevices({system: CurrentSystemService})
 });

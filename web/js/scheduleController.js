@@ -1,4 +1,4 @@
-app.controller('ScheduleController', function ($scope, $timeout, $window, $routeParams, $mdDialog, ScheduleService, TemperatureModeService) {
+app.controller('ScheduleController', function ($scope, $timeout, $window, $mdDialog, CurrentSystemService, ScheduleService, TemperatureModeService) {
     $scope.back = function() {$window.history.back();}
 
     Array.prototype.flatMap = function(lambda) {
@@ -93,7 +93,7 @@ app.controller('ScheduleController', function ($scope, $timeout, $window, $route
     $scope.schedule = [];
     var scheduleName = null;
     $scope.daySets = {};
-    ScheduleService.query({system: $routeParams.system, name: 'default'}, function(schedule) {
+    ScheduleService.query({system: CurrentSystemService, name: 'default'}, function(schedule) {
         scheduleName = schedule.name;
         // expand schedule with grouped days to schedule with separate days
         schedule.daySets.forEach(function(daySet) {
@@ -105,7 +105,7 @@ app.controller('ScheduleController', function ($scope, $timeout, $window, $route
     })
 
     var modesMap = {};
-    $scope.modes = TemperatureModeService.query({system: $routeParams.system}, function() {
+    $scope.modes = TemperatureModeService.query({system: CurrentSystemService}, function() {
         $scope.modes.forEach(function(mode) {modesMap[mode.name] = mode;})
     });
 
@@ -120,7 +120,7 @@ app.controller('ScheduleController', function ($scope, $timeout, $window, $route
         daySets.forEach(function(daySet) {daySet.days = simplifyDays(daySet.days);})
 
         var schedule = {name: scheduleName, daySets: daySets};
-        ScheduleService.updateWeekSchedule({system: $routeParams.system}, schedule);
+        ScheduleService.updateWeekSchedule({system: CurrentSystemService}, schedule);
     }
 
     $scope.getStartDayColor = function(number) {

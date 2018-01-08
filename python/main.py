@@ -3,7 +3,11 @@ from flask import Flask, Blueprint, send_from_directory
 from flask_restful import Api
 from flask_reggie import Reggie
 from flask_sockets import Sockets
+from domain.Cutie import Cutie
+from domain.MQTT import MQTT
 from rest.SystemRest import SystemRest
+from rest.MqttRest import MqttRest
+from rest.MqttInternalRest import MqttInternalRest
 
 import threading, time
 
@@ -12,18 +16,21 @@ Reggie(app)
 sockets = Sockets(app)
 
 web_folder = "../web"
+conf_folder = "../conf"
 
-data = [
-    {'name': 'default', 'title': 'Default'},
-    {'name': 'hvac', 'title': u'Отопление'}
-]
+cutie = Cutie(conf_folder)
+cutie.load()
+mqtt = MQTT(conf_folder)
+mqtt.load()
 
 # register REST services under that /rest
 rest = Blueprint('rest', __name__)
 rest_api = Api(rest)
 app.register_blueprint(rest, url_prefix='/rest')
 
-SystemRest.register(rest_api, data)
+SystemRest.register(rest_api, cutie)
+MqttRest.register(rest_api, mqtt)
+MqttInternalRest.register(rest_api, mqtt)
 
 
 @sockets.route('/state')

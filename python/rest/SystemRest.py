@@ -3,30 +3,31 @@ from flask_restful import Resource
 
 
 class SystemRest(Resource):
-    url = "/system"
+    url = '/system'
 
     def __init__(self, **kwargs):
         super(SystemRest, self).__init__()
-        self.data = kwargs['data']
+        self.cutie = kwargs['cutie']
 
     def get(self):
-        return self.data
+        return map(
+            lambda s: {'name': s.name, 'title': s.title},
+            self.cutie.get_systems()
+        )
 
     def put(self, name, title):
-        self.data.append({'name': name, 'title': title})
+        self.cutie.add_system(name, title)
 
     def post(self, name, title):
-        for x in self.data:
-            if x['name'] == name:
-                x['title'] = title
+        self.cutie.change_system(name, title)
 
     def delete(self, name):
-        self.data = [x for x in self.data if x['name'] != name]
+        self.cutie.delete_system(name)
 
     @classmethod
-    def register(cls, api, data):
+    def register(cls, api, cutie):
         api.add_resource(cls,
                          cls.url,
                          cls.url + '/<name>',
                          cls.url + '/<name>/<title>',
-                         resource_class_kwargs={'data': data})
+                         resource_class_kwargs={'cutie': cutie})

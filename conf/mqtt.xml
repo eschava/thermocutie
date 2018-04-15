@@ -1,8 +1,8 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml version='1.0' encoding='UTF-8'?>
 <MQTT>
     <!-- MQTT server configuration -->
-	<Server enabled="true" port="11883"/>
+	<Server enabled="true" port="11883" />
 	<Clients>
-		<Client clientId="ThermoCutie" name="internal" uri="tcp://localhost:11883"/>
+		<Client clientId="ThermoCutie" name="internal" uri="tcp://localhost:11883" />
 	</Clients>
 </MQTT>

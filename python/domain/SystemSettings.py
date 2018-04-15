@@ -1,4 +1,5 @@
 from xml.etree.ElementTree import parse, ElementTree, Element
+from .CommentedTreeBuilder import CommentedTreeBuilder
 
 
 class SystemSettings(object):
@@ -12,13 +13,13 @@ class SystemSettings(object):
 
     def save(self, f):
         try:
-            xml = parse(f)
+            xml = CommentedTreeBuilder.parse(f)
         except IOError:
             xml = ElementTree(Element('Settings'))
 
         root = xml.getroot()
         root.attrib['title'] = self._title
-        xml.write(f)
+        xml.write(f, encoding='UTF-8')
 
     @property
     def title(self):

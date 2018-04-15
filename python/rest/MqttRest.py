@@ -11,9 +11,8 @@ class MqttRest(Resource):
 
     def get(self):
         return map(
-            lambda b: {'name': b['name'], 'clientId': b['clientId'], 'uri': b['uri']},
-            # lambda b: {'name': b.name, 'clientId': b.clientId, 'uri': b.uri},
-            self.mqtt.get_brokers()
+            lambda b: {'name': b.name, 'clientId': b.client_id, 'uri': b.uri},
+            self.mqtt.get_clients()
         )
 
     @classmethod

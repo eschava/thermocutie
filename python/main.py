@@ -8,6 +8,7 @@ from domain.MQTT import MQTT
 from rest.SystemRest import SystemRest
 from rest.MqttRest import MqttRest
 from rest.MqttInternalRest import MqttInternalRest
+from rest.TemperatureModeRest import TemperatureModeRest
 
 import threading, time
 
@@ -31,6 +32,7 @@ app.register_blueprint(rest, url_prefix='/rest')
 SystemRest.register(rest_api, cutie)
 MqttRest.register(rest_api, mqtt)
 MqttInternalRest.register(rest_api, mqtt)
+TemperatureModeRest.register(rest_api, cutie)
 
 
 @sockets.route('/state')

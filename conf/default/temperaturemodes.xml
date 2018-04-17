@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml version='1.0' encoding='UTF-8'?>
 <TemperatureModes>
-    <Mode color="#ff9900" icon="stars-and-moon" name="Sleep" temperature="18.0"/>
-    <Mode color="#cf2500" icon="sun-rising" name="Home" temperature="20.0"/>
-    <Mode color="#0033cc" icon="sunrise-hour" name="Work" temperature="12.0"/>
+    <Mode color="#ff9900" icon="stars-and-moon" name="Sleep" temperature="18" />
+    <Mode color="#cf2500" icon="sun-rising" name="Home" temperature="20" />
+    <Mode color="#0033cc" icon="sunrise-hour" name="Work" temperature="12" />
 </TemperatureModes>

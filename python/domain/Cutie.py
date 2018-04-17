@@ -17,7 +17,7 @@ class Cutie:
         for name in os.listdir(self.folder):
             sub_folder = os.path.join(self.folder, name)
             if os.path.isdir(sub_folder):
-                system = System(name, '?')
+                system = System(sub_folder, name, '?')
                 system.load(sub_folder)
                 self.systems[system.name] = system
 
@@ -28,9 +28,9 @@ class Cutie:
         return self.systems[name]
 
     def add_system(self, name, title):
-        system = System(name, title)
-        self.systems[name] = system
         sub_folder = os.path.join(self.folder, name)
+        system = System(sub_folder, name, title)
+        self.systems[name] = system
         os.mkdir(sub_folder)
         system.save(sub_folder)
 

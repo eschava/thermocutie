@@ -117,7 +117,11 @@ app.controller('ScheduleController', function ($scope, $timeout, $window, $mdDia
         $scope.schedule.forEach(function(day) {
             $scope.daySets[day.set].days += day.name + ",";
         });
-        daySets.forEach(function(daySet) {daySet.days = simplifyDays(daySet.days);})
+        daySets.forEach(function(daySet, index) {
+            daySet.days = simplifyDays(daySet.days);
+            if (daySet.days == 'null')
+                daySets.splice(index, 1);
+        })
 
         var schedule = {name: scheduleName, daySets: daySets};
         ScheduleService.updateWeekSchedule({system: $currentSystem}, schedule);

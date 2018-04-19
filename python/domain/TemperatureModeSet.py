@@ -5,7 +5,7 @@ from .CommentedTreeBuilder import CommentedTreeBuilder
 from .TemperatureMode import TemperatureMode
 
 
-class TemperatureModes(object):
+class TemperatureModeSet(object):
     def __init__(self, file):
         self._file = file
         self._modes = []

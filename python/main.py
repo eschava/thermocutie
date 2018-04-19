@@ -1,16 +1,19 @@
 # coding=utf-8
+import threading
+import time
+
 from flask import Flask, Blueprint, send_from_directory
-from flask_restful import Api
 from flask_reggie import Reggie
+from flask_restful import Api
 from flask_sockets import Sockets
+
 from domain.Cutie import Cutie
 from domain.MQTT import MQTT
-from rest.SystemRest import SystemRest
-from rest.MqttRest import MqttRest
 from rest.MqttInternalRest import MqttInternalRest
+from rest.MqttRest import MqttRest
+from rest.ScheduleRest import ScheduleRest
+from rest.SystemRest import SystemRest
 from rest.TemperatureModeRest import TemperatureModeRest
-
-import threading, time
 
 app = Flask(__name__)
 Reggie(app)
@@ -33,6 +36,7 @@ SystemRest.register(rest_api, cutie)
 MqttRest.register(rest_api, mqtt)
 MqttInternalRest.register(rest_api, mqtt)
 TemperatureModeRest.register(rest_api, cutie)
+ScheduleRest.register(rest_api, cutie)
 
 
 @sockets.route('/state')

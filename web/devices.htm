@@ -1,5 +1,6 @@
 <h2>Devices</h2>
 <b ng-repeat="device in devices">
-    {{device.name}} <br/>
+    <ng-include src="'/device/' + device.type + '.htm'"></ng-include>
+    <br/>
 </b>
 <md-button ng-click="back()">Back</md-button>

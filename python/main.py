@@ -11,6 +11,7 @@ from domain.Cutie import Cutie
 from domain.MQTT import MQTT
 from rest.MqttInternalRest import MqttInternalRest
 from rest.MqttRest import MqttRest
+from rest.DeviceRest import DeviceRest
 from rest.ScheduleRest import ScheduleRest
 from rest.SystemRest import SystemRest
 from rest.TemperatureModeRest import TemperatureModeRest
@@ -35,6 +36,7 @@ app.register_blueprint(rest, url_prefix='/rest')
 SystemRest.register(rest_api, cutie)
 MqttRest.register(rest_api, mqtt)
 MqttInternalRest.register(rest_api, mqtt)
+DeviceRest.register(rest_api, cutie)
 TemperatureModeRest.register(rest_api, cutie)
 ScheduleRest.register(rest_api, cutie)
 
@@ -59,7 +61,7 @@ def controller(page):
     return send_from_directory(web_folder, 'index.htm')
 
 
-@app.route('/<regex("(bower_components|css|icons|js)/.*"):f>')
+@app.route('/<regex("(bower_components|css|icons|js|device)/.*"):f>')
 @app.route('/<regex(".*\.htm"):f>')
 def static_file(f):
     return send_from_directory(web_folder, f)

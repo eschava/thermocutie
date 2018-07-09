@@ -42,6 +42,13 @@ class DeviceSet(object):
     def list(self):
         return self._devices
 
+    def update(self, name, changes):
+        device = next((s for s in self._devices if s.name == name), None)
+        if device is None:
+            raise Exception('Unknown device : ' + name)
+        device.update(changes)
+        self.save()
+
     # def add(self, mode_changes):
     #     mode = TemperatureMode()
     #     mode.name = mode_changes['name']
@@ -49,19 +56,6 @@ class DeviceSet(object):
     #     mode.color = mode_changes['color']
     #     mode.temperature = mode_changes['temperature']
     #     self._modes.append(mode)
-    #     self.save()
-    #
-    # def update(self, mode_changes):
-    #     name = mode_changes['name']
-    #     mode = next((m for m in self._modes if m.name == name), None)
-    #     mode.icon = mode_changes['icon']
-    #     mode.color = mode_changes['color']
-    #     mode.temperature = mode_changes['temperature']
-    #     self.save()
-    #
-    # def rename(self, old_name, new_name):
-    #     mode = next((m for m in self._modes if m.name == old_name), None)
-    #     mode.name = new_name
     #     self.save()
     #
     # def delete(self, name):

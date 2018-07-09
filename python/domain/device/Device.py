@@ -16,3 +16,6 @@ class Device(object):
 
     def save(self, xml):
         xml.attrib['name'] = self._name
+
+    def json(self):
+        return {'name': self._name, 'type': self._type}

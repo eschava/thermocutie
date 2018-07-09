@@ -17,7 +17,7 @@ app.controller('TemperatureModeController', function ($scope, $window, $currentS
             TemperatureModeService.add({system: $currentSystem}, mode, function() {
                 $scope.modes.push(mode);
             }, function(r) {
-                alert(r.data || "Error");
+                alert(r.data.message || "Error");
             });
         });
     }
@@ -37,7 +37,7 @@ app.controller('TemperatureModeController', function ($scope, $window, $currentS
             TemperatureModeService.update({system: $currentSystem}, changedMode, function() {
                 angular.copy(changedMode, mode);
             }, function(r) {
-                alert(r.data || "Error");
+                alert(r.data.message || "Error");
             });
         });
     }
@@ -54,7 +54,7 @@ app.controller('TemperatureModeController', function ($scope, $window, $currentS
             TemperatureModeService.rename({system: $currentSystem, oldName: mode.name, newName: newName}, function() {
                 mode.name = newName;
             }, function(r) {
-              alert(r.data || "Error");
+              alert(r.data.message || "Error");
             });
         });
     }
@@ -69,7 +69,7 @@ app.controller('TemperatureModeController', function ($scope, $window, $currentS
             TemperatureModeService.delete({system: $currentSystem, name: mode.name}, function() {
                 $scope.modes.splice($scope.modes.indexOf(mode), 1);
             }, function(r) {
-                alert(r.data || "Error");
+                alert(r.data.message || "Error");
             });
         });
     }

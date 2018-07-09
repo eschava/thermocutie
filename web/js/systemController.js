@@ -18,7 +18,7 @@ app.controller('SystemController', function ($scope, $window, $currentSystem, $m
             SystemService.add({name: system.name, title: system.title}, function() {
                 $scope.systems.push(system);
             }, function(r) {
-                alert(r.data || "Error");
+                alert(r.data.message || "Error");
             });
         });
     }
@@ -35,7 +35,7 @@ app.controller('SystemController', function ($scope, $window, $currentSystem, $m
             SystemService.update({name: system.name, title: newTitle}, function() {
                 system.title = newTitle;
             }, function(r) {
-              alert(r.data || "Error");
+              alert(r.data.message || "Error");
             });
         });
     }
@@ -50,7 +50,7 @@ app.controller('SystemController', function ($scope, $window, $currentSystem, $m
             SystemService.delete({name: system.name}, function() {
                 $scope.systems.splice($scope.systems.indexOf(system), 1);
             }, function(r) {
-                alert(r.data || "Error");
+                alert(r.data.message || "Error");
             });
         });
     }

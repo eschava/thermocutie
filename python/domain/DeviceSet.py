@@ -7,8 +7,10 @@ from .device.HVAC import HVAC
 
 
 class DeviceSet(object):
-    def __init__(self, file):
+    def __init__(self, file, mqtt, system_state):
         self._file = file
+        self._mqtt = mqtt
+        self._system_state = system_state
         self._devices = []
 
     def load(self):
@@ -62,10 +64,9 @@ class DeviceSet(object):
     #     self._modes[:] = [m for m in self._modes if m.name != name]
     #     self.save()
 
-    @staticmethod
-    def create_device(type):
+    def create_device(self, type):
         if type == TemperatureSensor.TYPE:
-            return TemperatureSensor()
+            return TemperatureSensor(self._mqtt, self._system_state)
         elif type == HVAC.TYPE:
             return HVAC()
         else:

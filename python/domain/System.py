@@ -1,4 +1,5 @@
 import os
+from .SystemState import SystemState
 from .SystemSettings import SystemSettings
 from .DeviceSet import DeviceSet
 from .TemperatureModeSet import TemperatureModeSet
@@ -6,12 +7,12 @@ from .ScheduleSet import ScheduleSet
 
 
 class System(object):
-
-    def __init__(self, folder, name, title):
+    def __init__(self, mqtt, folder, name, title):
         self._name = name
+        self._state = SystemState()
         self._settings = SystemSettings(title)
         # TODO: path could change
-        self._devices = DeviceSet(os.path.join(folder, "devices.xml"))
+        self._devices = DeviceSet(os.path.join(folder, "devices.xml"), mqtt, self._state)
         self._temperature_modes = TemperatureModeSet(os.path.join(folder, "temperaturemodes.xml"))
         self._schedule_set = ScheduleSet(os.path.join(folder, "schedules.xml"))
 
@@ -52,3 +53,9 @@ class System(object):
 
     def update_schedule(self, schedule_changes):
         self._schedule_set.update_schedule(schedule_changes)
+
+    def subscribe(self, listener):
+        self._state.subscribe(listener)
+
+    def unsubscribe(self, listener):
+        self._state.unsubscribe(listener)

@@ -1,6 +1,5 @@
-app.controller('DevicesController', function ($scope, $window, $currentSystem, $mdDialog, DevicesService, MqttBrokersService) {
-    $scope.back = function() {$window.history.back();}
-
+app.controller('DevicesController', function ($scope, $window, $currentSystem, $mdDialog, CurrentState, DevicesService, MqttBrokersService) {
+    $scope.CurrentState = CurrentState;
     $scope.devices = DevicesService.getDevices({system: $currentSystem})
 
     $scope.edit = function(device) {
@@ -17,6 +16,8 @@ app.controller('DevicesController', function ($scope, $window, $currentSystem, $
             angular.copy(changedDevice, device);
         });
     }
+
+    $scope.back = function() {$window.history.back();}
 
     function EditDeviceController($scope, $mdDialog, device) {
         var name = device.name;

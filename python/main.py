@@ -1,7 +1,4 @@
 # coding=utf-8
-import threading
-import time
-
 from flask import Flask, Blueprint, send_from_directory
 from flask_reggie import Reggie
 from flask_restful import Api
@@ -15,6 +12,7 @@ from rest.DeviceRest import DeviceRest
 from rest.ScheduleRest import ScheduleRest
 from rest.SystemRest import SystemRest
 from rest.TemperatureModeRest import TemperatureModeRest
+from rest.SystemStateWebSocket import SystemStateWebSocket
 
 app = Flask(__name__)
 Reggie(app)
@@ -23,10 +21,11 @@ sockets = Sockets(app)
 web_folder = "../web"
 conf_folder = "../conf"
 
-cutie = Cutie(conf_folder)
-cutie.load()
 mqtt = MQTT(conf_folder)
 mqtt.load()
+
+cutie = Cutie(conf_folder, mqtt)
+cutie.load()
 
 # register REST services under that /rest
 rest = Blueprint('rest', __name__)
@@ -44,14 +43,9 @@ ScheduleRest.register(rest_api, cutie)
 @sockets.route('/state')
 def state_websocket(ws):
     while not ws.closed:
-        message = ws.receive()
-        def worker():
-            for x in range(20, 30):
-                ws.send('{"currentTemperature":0.0,"targetMode":{"name":"Home","temperature":' + str(x) + ',"color":"#cf2500","icon":"sun-rising"}}')
-                time.sleep(2)
-
-        t = threading.Thread(target=worker)
-        t.start()
+        system_name = ws.receive()
+        listener = SystemStateWebSocket(cutie, ws, system_name)
+        cutie.subscribe(system_name, listener.send)
 
 
 # noinspection PyUnusedLocal

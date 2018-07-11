@@ -11,6 +11,7 @@ class MQTT(object):
         self._config_file = os.path.join(folder, "mqtt.xml")
         self._server_enabled = False
         self._server_port = 0
+        self._server = None
         self._clients = []
 
     def load(self):
@@ -21,6 +22,9 @@ class MQTT(object):
         if server is not None:
             self._server_enabled = server.attrib['enabled'].lower() == 'true'
             self._server_port = int(server.attrib['port'])
+
+            if self._server_enabled:
+                self.start_server()
 
         for client in root.findall('Clients/Client'):
             self._clients.append(MQTTClient(client))
@@ -64,6 +68,26 @@ class MQTT(object):
         return self._server_port
 
     def server_update(self, enabled, port):
+        if self._server_enabled != enabled:
+            if enabled:
+                self.start_server()
+            else:
+                self.stop_server()
+
         self._server_enabled = enabled
         self._server_port = port
         self.save()
+
+    def start_server(self):
+        pass
+
+    def stop_server(self):
+        pass
+
+    def subscribe(self, name, topic, listener):
+        client = next((c for c in self._clients if c.name == name), None)
+        client.subscribe(topic, listener)
+
+    def unsubscribe(self, name, topic, listener):
+        client = next((c for c in self._clients if c.name == name), None)
+        client.unsubscribe(topic, listener)

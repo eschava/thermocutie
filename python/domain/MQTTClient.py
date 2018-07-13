@@ -52,7 +52,8 @@ class MQTTClient(object):
     def on_connect(self, client, userdata, flags, rc):
         self._connected = True
 
-    def on_disconnect(self):
+    # noinspection PyUnusedLocal
+    def on_disconnect(self, client, userdata, rc):
         self._connected = False
 
     # noinspection PyUnusedLocal

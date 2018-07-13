@@ -55,7 +55,7 @@ def controller(page):
     return send_from_directory(web_folder, 'index.htm')
 
 
-@app.route('/<regex("(bower_components|css|icons|js|device)/.*"):f>')
+@app.route('/<regex("(bower_components|css|icons|js|device|example|src)/.*"):f>')
 @app.route('/<regex(".*\.htm"):f>')
 def static_file(f):
     return send_from_directory(web_folder, f)

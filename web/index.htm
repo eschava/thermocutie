@@ -10,12 +10,13 @@
     <script src="/bower_components/angular-aria/angular-aria.js"></script>
     <script src="/bower_components/angular-messages/angular-messages.js"></script>
     <script src="/bower_components/angular-material/angular-material.js"></script>
+    <script src="/bower_components/angular-material-widget-engine/angular-material-widget-engine.js"></script>
     <script src="/bower_components/angular-websocket/dist/angular-websocket.js"></script>
     <script src="/bower_components/ngtouch/src/ngTouch.js"></script>
     <script src="/bower_components/tinycolor/dist/tinycolor-min.js"></script>
     <script src="/bower_components/md-color-picker/dist/mdColorPicker.min.js"></script>
     <script>
-        app = angular.module('ThermoCutieApp', ['angular-websocket', 'ngMaterial', 'ngRoute', 'ngResource', 'ngTouch', 'mdColorPicker']);
+        app = angular.module('ThermoCutieApp', ['angular-websocket', 'ngMaterial', 'ngMdWidgetEngine', 'ngRoute', 'ngResource', 'ngTouch', 'mdColorPicker']);
     </script>
     <script src="/js/routing.js"></script>
     <script src="/js/globalEvents.js"></script>
@@ -36,6 +37,8 @@
     <!-- style sheets -->
     <link rel="stylesheet" href="/bower_components/angular-material/angular-material.min.css"/>
     <link rel="stylesheet" href="/bower_components/md-color-picker/dist/mdColorPicker.min.css"/>
+    <link rel="stylesheet" href="/bower_components/angular-material-widget-engine/angular-material-widget-engine.css"/>
+    <link rel="stylesheet" href="/css/Material Icons.css" >
 </head>
 <body ng-app="ThermoCutieApp">
     <div class="ng-view"></div>

@@ -9,21 +9,22 @@ from .ScheduleSet import ScheduleSet
 class System(object):
     def __init__(self, mqtt, folder, name, title):
         self._name = name
+        self._folder = folder
         self._state = SystemState()
         self._settings = SystemSettings(title)
         # TODO: path could change
-        self._devices = DeviceSet(os.path.join(folder, "devices.xml"), mqtt, self._state)
-        self._temperature_modes = TemperatureModeSet(os.path.join(folder, "temperaturemodes.xml"))
-        self._schedule_set = ScheduleSet(os.path.join(folder, "schedules.xml"))
+        self._devices = DeviceSet(os.path.join(folder, 'devices.xml'), mqtt, self._state)
+        self._temperature_modes = TemperatureModeSet(os.path.join(folder, 'temperaturemodes.xml'))
+        self._schedule_set = ScheduleSet(os.path.join(folder, 'schedules.xml'))
 
-    def load(self, folder):
-        self._settings.load(os.path.join(folder, "settings.xml"))
+    def load(self):
+        self._settings.load(os.path.join(self._folder, 'settings.xml'))
         self._devices.load()
         self._temperature_modes.load()
         self._schedule_set.load()
 
-    def save(self, folder):
-        self._settings.save(os.path.join(folder, "settings.xml"))
+    def save(self):
+        self._settings.save(os.path.join(self._folder, 'settings.xml'))
         self._devices.save()
         self._temperature_modes.save()
         self._schedule_set.save()
@@ -59,3 +60,13 @@ class System(object):
 
     def unsubscribe(self, listener):
         self._state.unsubscribe(listener)
+
+    @property
+    def dashboard(self):
+        with open(os.path.join(self._folder, 'dashboard.json'), 'r') as f:
+            return f.read()
+
+    @dashboard.setter
+    def dashboard(self, value):
+        with open(os.path.join(self._folder, 'dashboard.json'), 'w') as f:
+            f.write(value)

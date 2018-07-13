@@ -1,4 +1,4 @@
-app.controller('MainController', function ($scope, $window, CurrentState) {
+app.controller('MainController', function ($scope, $window, $currentSystem, DashboardService, CurrentState) {
     $scope.CurrentState = CurrentState;
 
     $scope.randomValue = Math.random();
@@ -22,22 +22,17 @@ app.controller('MainController', function ($scope, $window, CurrentState) {
                                  directive: 'wt-fluid',
                                }
                              ],
-        defaultWidgets: [
-                          { name: 'random' },
-                          { name: 'time' },
-                          {
-                            name: 'random',
-                          },
-                          {
-                            name: 'time',
-                          }
-                        ],
+        defaultWidgets: [],
+        stringifyStorage: false,
         storage: {
             getItem: function (key) {
-                return null;
+                return DashboardService.get({system: $currentSystem}).$promise;
             },
             setItem: function (key, value) {
-                return null;
+                DashboardService.update({system: $currentSystem}, value, function() {},
+                    function(r) {
+                        alert(r.data.message || "Error");
+                    });
             },
             removeItem: function (key) {
                 return null;

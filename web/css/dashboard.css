@@ -6,3 +6,7 @@
   position: relative;
   height: auto;
 }
+
+.widget-container {
+    padding-bottom: 0;
+}

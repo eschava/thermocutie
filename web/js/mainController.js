@@ -1,27 +1,10 @@
 app.controller('MainController', function ($scope, $window, $currentSystem, DashboardService, CurrentState) {
     $scope.CurrentState = CurrentState;
 
-    $scope.randomValue = Math.random();
-
     $scope.dashboardOptions = {
         widgetDefinitions: [
-                               {
-                                 name: 'random',
-                                 templateUrl: '/widget/test.htm',
-
-                                 attrs: {
-                                   value: 'randomValue',
-                                 }
-                               },
-                               {
-                                 name: 'time',
-                                 directive: 'wt-time'
-                               },
-                               {
-                                 name: 'fluid',
-                                 directive: 'wt-fluid',
-                               }
-                             ],
+            {name: 'sensor', templateUrl: '/widget/sensor.htm'},
+        ],
         defaultWidgets: [],
         stringifyStorage: false,
         storage: {

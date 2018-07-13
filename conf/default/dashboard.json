@@ -1,44 +1,17 @@
 {
     "widgets": [
         {
-            "name": "time", 
-            "size": {
-                "height": "412px"
-            }, 
-            "style": {}, 
-            "title": "Widget 2"
-        }, 
-        {
             "attrs": {
-                "value": "randomValue"
+                "color": "blue", 
+                "device": "Temperature"
             }, 
-            "name": "random", 
+            "name": "sensor", 
             "size": {
-                "height": "304px", 
-                "width": "14.670000000000002%"
-            }, 
-            "style": {}, 
-            "title": "Widget 3"
-        }, 
-        {
-            "name": "time", 
-            "size": {
-                "height": "240px"
+                "height": "152px", 
+                "width": "20.6%"
             }, 
             "style": {}, 
             "title": "Widget 4"
-        }, 
-        {
-            "attrs": {
-                "value": "randomValue"
-            }, 
-            "name": "random", 
-            "size": {
-                "height": "89px", 
-                "width": "8.05%"
-            }, 
-            "style": {}, 
-            "title": "Widget 1"
         }
     ]
 }

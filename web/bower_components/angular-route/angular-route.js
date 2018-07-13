@@ -1,6 +1,6 @@
 /**
- * @license AngularJS v1.6.1
- * (c) 2010-2016 Google, Inc. http://angularjs.org
+ * @license AngularJS v1.7.2
+ * (c) 2010-2018 Google, Inc. http://angularjs.org
  * License: MIT
  */
 (function(window, angular) {'use strict';
@@ -39,25 +39,23 @@ function shallowCopy(src, dst) {
 var isArray;
 var isObject;
 var isDefined;
+var noop;
 
 /**
  * @ngdoc module
  * @name ngRoute
  * @description
  *
- * # ngRoute
- *
- * The `ngRoute` module provides routing and deeplinking services and directives for angular apps.
+ * The `ngRoute` module provides routing and deeplinking services and directives for AngularJS apps.
  *
  * ## Example
- * See {@link ngRoute.$route#example $route} for an example of configuring and using `ngRoute`.
+ * See {@link ngRoute.$route#examples $route} for an example of configuring and using `ngRoute`.
  *
- *
- * <div doc-module-components="ngRoute"></div>
  */
 /* global -ngRouteModule */
 var ngRouteModule = angular.
   module('ngRoute', []).
+  info({ angularVersion: '1.7.2' }).
   provider('$route', $RouteProvider).
   // Ensure `$route` will be instantiated in time to capture the initial `$locationChangeSuccess`
   // event (unless explicitly disabled). This is necessary in case `ngView` is included in an
@@ -77,7 +75,7 @@ var isEagerInstantiationEnabled;
  * Used for configuring routes.
  *
  * ## Example
- * See {@link ngRoute.$route#example $route} for an example of configuring and using `ngRoute`.
+ * See {@link ngRoute.$route#examples $route} for an example of configuring and using `ngRoute`.
  *
  * ## Dependencies
  * Requires the {@link ngRoute `ngRoute`} module to be installed.
@@ -86,6 +84,7 @@ function $RouteProvider() {
   isArray = angular.isArray;
   isObject = angular.isObject;
   isDefined = angular.isDefined;
+  noop = angular.noop;
 
   function inherit(parent, extra) {
     return angular.extend(Object.create(parent), extra);
@@ -216,11 +215,22 @@ function $RouteProvider() {
    *      `redirectTo` takes precedence over `resolveRedirectTo`, so specifying both on the same
    *      route definition, will cause the latter to be ignored.
    *
+   *    - `[reloadOnUrl=true]` - `{boolean=}` - reload route when any part of the URL changes
+   *      (inluding the path) even if the new URL maps to the same route.
+   *
+   *      If the option is set to `false` and the URL in the browser changes, but the new URL maps
+   *      to the same route, then a `$routeUpdate` event is broadcasted on the root scope (without
+   *      reloading the route).
+   *
    *    - `[reloadOnSearch=true]` - `{boolean=}` - reload route when only `$location.search()`
    *      or `$location.hash()` changes.
    *
-   *      If the option is set to `false` and url in the browser changes, then
-   *      `$routeUpdate` event is broadcasted on the root scope.
+   *      If the option is set to `false` and the URL in the browser changes, then a `$routeUpdate`
+   *      event is broadcasted on the root scope (without reloading the route).
+   *
+   *      <div class="alert alert-warning">
+   *        **Note:** This option has no effect if `reloadOnUrl` is set to `false`.
+   *      </div>
    *
    *    - `[caseInsensitiveMatch=false]` - `{boolean=}` - match routes without being case sensitive
    *
@@ -235,6 +245,9 @@ function $RouteProvider() {
   this.when = function(path, route) {
     //copy original route object to preserve params inherited from proto chain
     var routeCopy = shallowCopy(route);
+    if (angular.isUndefined(routeCopy.reloadOnUrl)) {
+      routeCopy.reloadOnUrl = true;
+    }
     if (angular.isUndefined(routeCopy.reloadOnSearch)) {
       routeCopy.reloadOnSearch = true;
     }
@@ -382,7 +395,8 @@ function $RouteProvider() {
                '$injector',
                '$templateRequest',
                '$sce',
-      function($rootScope, $location, $routeParams, $q, $injector, $templateRequest, $sce) {
+               '$browser',
+      function($rootScope, $location, $routeParams, $q, $injector, $templateRequest, $sce, $browser) {
 
     /**
      * @ngdoc service
@@ -576,8 +590,9 @@ function $RouteProvider() {
      * @name $route#$routeUpdate
      * @eventType broadcast on root scope
      * @description
-     * The `reloadOnSearch` property has been set to false, and we are reusing the same
-     * instance of the Controller.
+     * Broadcasted if the same instance of a route (including template, controller instance,
+     * resolved dependencies, etc.) is being reused. This can happen if either `reloadOnSearch` or
+     * `reloadOnUrl` has been set to `false`.
      *
      * @param {Object} angularEvent Synthetic event object
      * @param {Route} current Current/previous route information.
@@ -637,7 +652,7 @@ function $RouteProvider() {
               // interpolate modifies newParams, only query params are left
               $location.search(newParams);
             } else {
-              throw $routeMinErr('norout', 'Tried updating route when with no current route');
+              throw $routeMinErr('norout', 'Tried updating route with no current route');
             }
           }
         };
@@ -685,9 +700,7 @@ function $RouteProvider() {
       var lastRoute = $route.current;
 
       preparedRoute = parseRoute();
-      preparedRouteIsUpdateOnly = preparedRoute && lastRoute && preparedRoute.$$route === lastRoute.$$route
-          && angular.equals(preparedRoute.pathParams, lastRoute.pathParams)
-          && !preparedRoute.reloadOnSearch && !forceReload;
+      preparedRouteIsUpdateOnly = isNavigationUpdateOnly(preparedRoute, lastRoute);
 
       if (!preparedRouteIsUpdateOnly && (lastRoute || preparedRoute)) {
         if ($rootScope.$broadcast('$routeChangeStart', preparedRoute, lastRoute).defaultPrevented) {
@@ -712,6 +725,8 @@ function $RouteProvider() {
 
         var nextRoutePromise = $q.resolve(nextRoute);
 
+        $browser.$$incOutstandingRequestCount();
+
         nextRoutePromise.
           then(getRedirectionData).
           then(handlePossibleRedirection).
@@ -732,6 +747,13 @@ function $RouteProvider() {
             if (nextRoute === $route.current) {
               $rootScope.$broadcast('$routeChangeError', nextRoute, lastRoute, error);
             }
+          }).finally(function() {
+            // Because `commitRoute()` is called from a `$rootScope.$evalAsync` block (see
+            // `$locationWatch`), this `$$completeOutstandingRequest()` call will not cause
+            // `outstandingRequestCount` to hit zero.  This is important in case we are redirecting
+            // to a new route which also requires some asynchronous work.
+
+            $browser.$$completeOutstandingRequest(noop);
           });
       }
     }
@@ -859,6 +881,29 @@ function $RouteProvider() {
     }
 
     /**
+     * @param {Object} newRoute - The new route configuration (as returned by `parseRoute()`).
+     * @param {Object} oldRoute - The previous route configuration (as returned by `parseRoute()`).
+     * @returns {boolean} Whether this is an "update-only" navigation, i.e. the URL maps to the same
+     *                    route and it can be reused (based on the config and the type of change).
+     */
+    function isNavigationUpdateOnly(newRoute, oldRoute) {
+      // IF this is not a forced reload
+      return !forceReload
+          // AND both `newRoute`/`oldRoute` are defined
+          && newRoute && oldRoute
+          // AND they map to the same Route Definition Object
+          && (newRoute.$$route === oldRoute.$$route)
+          // AND `reloadOnUrl` is disabled
+          && (!newRoute.reloadOnUrl
+              // OR `reloadOnSearch` is disabled
+              || (!newRoute.reloadOnSearch
+                  // AND both routes have the same path params
+                  && angular.equals(newRoute.pathParams, oldRoute.pathParams)
+              )
+          );
+    }
+
+    /**
      * @returns {string} interpolation of the redirect path with the parameters
      */
     function interpolate(string, params) {
@@ -938,7 +983,6 @@ ngRouteModule.directive('ngView', ngViewFillContentFactory);
  * @restrict ECA
  *
  * @description
- * # Overview
  * `ngView` is a directive that complements the {@link ngRoute.$route $route} service by
  * including the rendered template of the current route into the main layout (`index.html`) file.
  * Every time the current route changes, the included view changes with it according to the

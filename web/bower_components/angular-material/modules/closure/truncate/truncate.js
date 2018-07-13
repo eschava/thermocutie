@@ -1,8 +1,8 @@
 /*!
- * Angular Material Design
+ * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.3
+ * v1.1.10
  */
 goog.provide('ngmaterial.components.truncate');
 goog.require('ngmaterial.core');
@@ -76,10 +76,8 @@ function MdTruncateDirective() {
   return {
     restrict: 'AE',
 
-    controller: MdTruncateController,
-    controllerAs: '$ctrl',
-    bindToController: true
-  }
+    controller: MdTruncateController
+  };
 }
 
 /**

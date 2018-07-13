@@ -1,6 +1,6 @@
 {
   "name": "ngtouch",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "An angular module to add directives for touch devices",
   "main": "src/ngTouch.js",
   "directories": {
@@ -47,14 +47,13 @@
     "url": "https://github.com/nglar/ngTouch/issues"
   },
   "homepage": "https://github.com/nglar/ngTouch#readme",
-  "_release": "1.0.1",
+  "_release": "1.0.2",
   "_resolution": {
     "type": "version",
-    "tag": "v1.0.1",
-    "commit": "f5b6db02648f93cad2353d8044b8da701b2e56ee"
+    "tag": "v1.0.2",
+    "commit": "1285101327290670a9b85d900254d46f771e6421"
   },
   "_source": "https://github.com/nglar/ngTouch.git",
   "_target": "^1.0.1",
-  "_originalSource": "ngtouch",
-  "_direct": true
+  "_originalSource": "ngtouch"
 }

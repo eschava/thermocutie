@@ -12,6 +12,6 @@ class SystemStateWebSocket(object):
         try:
             self.websocket.send(json.dumps(data))
         except Exception, e:
-            logging.error("Websocket error '%s', disconnected" % str(e))
+            logging.warn("Websocket error '%s', unsubscribing device state listener" % str(e))
             self.cutie.unsubscribe(self.name, self.send)
 

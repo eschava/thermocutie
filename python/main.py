@@ -11,6 +11,7 @@ from rest.MqttRest import MqttRest
 from rest.DeviceRest import DeviceRest
 from rest.ScheduleRest import ScheduleRest
 from rest.SystemRest import SystemRest
+from rest.DashboardRest import DashboardRest
 from rest.TemperatureModeRest import TemperatureModeRest
 from rest.SystemStateWebSocket import SystemStateWebSocket
 
@@ -38,6 +39,7 @@ MqttInternalRest.register(rest_api, mqtt)
 DeviceRest.register(rest_api, cutie)
 TemperatureModeRest.register(rest_api, cutie)
 ScheduleRest.register(rest_api, cutie)
+DashboardRest.register(rest_api, cutie)
 
 
 @sockets.route('/state')

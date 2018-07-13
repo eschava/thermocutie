@@ -1,6 +1,16 @@
 app.controller('MainController', function ($scope, CurrentState) {
     $scope.CurrentState = CurrentState;
 
+//                getItem: function (key) {
+//                    return DashboardService.get({system: $currentSystem}).$promise;
+//                },
+//                setItem: function (key, value) {
+//                    DashboardService.update({system: $currentSystem}, value, function() {},
+//                        function(r) {
+//                            alert(r.data.message || "Error");
+//                        });
+//                },
+
     $scope.gridsterOpts = {
         columns: 6, // the width of the grid, in columns
         pushing: true, // whether to push other items out of the way on move or resize
@@ -39,6 +49,8 @@ app.controller('MainController', function ($scope, CurrentState) {
            stop: function(event, $element, widget) {} // optional callback fired when item is finished dragging
         }
     };
+
+
 
     $scope.widgets = [
       { sizeX: 2, sizeY: 1, row: 0, col: 0, type: 'Sensor' }

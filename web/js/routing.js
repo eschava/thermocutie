@@ -1,4 +1,4 @@
-app.config(function($routeProvider, $locationProvider) {
+app.config(function($routeProvider, $locationProvider, $provide) {
     $routeProvider
 
     .when("/settings",                  { templateUrl : "/settings.htm", controller : "SettingsController"})
@@ -27,5 +27,19 @@ app.config(function($routeProvider, $locationProvider) {
     $locationProvider.html5Mode({
         enabled: true,
         requireBase: false
+    });
+
+    // TODO: temporary fix for https://github.com/brianpkelley/md-color-picker/issues/100 issue
+    // TODO: taken from https://github.com/brianpkelley/md-color-picker/issues/100#issuecomment-316028858
+    // Decorate the $mdDialog service using $provide.decorator
+    $provide.decorator("$mdDialog", function ($delegate) {
+        // Get a handle of the show method
+        var methodHandle = $delegate.show;
+        function decorateDialogShow () {
+            var args = angular.extend({}, arguments[0], { multiple: true })
+            return methodHandle(args);
+        }
+        $delegate.show = decorateDialogShow;
+        return $delegate;
     });
 });

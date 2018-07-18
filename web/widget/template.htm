@@ -1,9 +1,15 @@
 <div>
     <div ui-sortable="sortableOptions" ng-model="widgets" class="dashboard-widget-area">
         <div ng-repeat="widget in widgets" ng-style="widget.containerStyle" class="widget-container" widget>
-            <div class="widget panel panel-default">
+            <div class="widget panel panel-default"
+                 ng-mouseover="widget.more = true"
+                 ng-mouseout="widget.more = false"
+            >
                 <div class="widget-header panel-heading">
                     <div class="panel-body widget-content" ng-style="widget.contentStyle"></div>
+                </div>
+                <div class="widget-more" ng-show="widget.more" ng-click="more(widget)">
+                    <md-icon md-menu-origin md-svg-src="/icons/material/more_vert.svg"></md-icon>
                 </div>
                 <div class="widget-ew-resizer" ng-mousedown="grabResizer($event)"></div>
                 <div ng-if="widget.enableVerticalResize" class="widget-s-resizer" ng-mousedown="grabSouthResizer($event)"></div>

@@ -2,16 +2,18 @@
     "widgets": [
         {
             "attrs": {
-                "color": "blue", 
-                "device": "Temperature"
+                "color": "blue",
+                "device": "Temperature", 
+                "prefix": "Current:", 
+                "suffix": "\u00b0C"
             }, 
-            "name": "sensor", 
+            "name": "Sensor", 
             "size": {
                 "height": "152px", 
                 "width": "20.6%"
             }, 
             "style": {}, 
-            "title": "Widget 4"
+            "title": "Widget 1"
         }
     ]
 }

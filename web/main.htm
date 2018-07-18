@@ -1,4 +1,48 @@
 <div dashboard="dashboardOptions" template-url="/widget/template.htm"></div>
 
-<br/><br/><br/>
-<md-button class="md-primary" href="settings">Settings</md-button>
+<div class="settings">
+    <md-button ng-click="settingsMenu()">
+        <md-icon md-menu-origin md-svg-src="/icons/material/settings.svg" class="size-48"></md-icon>
+    </md-button>
+</div>
+
+<!-- utility elements -->
+<md-menu>
+    <md-button id="editWidgetMenu" ng-click="$mdMenu.open($event)" style="position:fixed; visibility:hidden;">Click</md-button>
+    <md-menu-content width="2">
+        <md-menu-item>
+            <md-button ng-click="editWidget()">
+                Edit
+            </md-button>
+        </md-menu-item>
+        <md-menu-item>
+            <md-button ng-click="removeWidget()">
+                Remove
+            </md-button>
+        </md-menu-item>
+    </md-menu-content>
+</md-menu>
+
+<md-menu>
+    <md-button id="settingsMenu" ng-click="$mdMenu.open($event)" style="position:fixed; visibility:hidden;">Click</md-button>
+    <md-menu-content width="2">
+        <md-menu-item>
+            <md-button ng-disabled="'true'">
+                <md-icon md-menu-origin md-svg-src="/icons/material/add.svg" class="size-48"></md-icon>
+                Add widget
+            </md-button>
+        </md-menu-item>
+        <md-menu-item ng-repeat="widgetType in widgetTypes">
+            <md-button ng-click="addWidget(widgetType)">
+                {{widgetType}}
+            </md-button>
+        </md-menu-item>
+        <md-menu-divider></md-menu-divider>
+        <md-menu-item>
+            <md-button href="settings">
+                <md-icon md-menu-origin md-svg-src="/icons/material/settings.svg" class="size-48"></md-icon>
+                Settings
+            </md-button>
+        </md-menu-item>
+    </md-menu-content>
+</md-menu>

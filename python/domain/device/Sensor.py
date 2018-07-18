@@ -1,8 +1,8 @@
 from .Device import Device
 
 
-class TemperatureSensor(Device):
-    TYPE = 'Temperature'
+class Sensor(Device):
+    TYPE = 'Sensor'
 
     def __init__(self, mqtt, system_state):
         Device.__init__(self, self.TYPE)
@@ -20,7 +20,7 @@ class TemperatureSensor(Device):
         return self._mqttTopic
 
     def load(self, xml):
-        super(TemperatureSensor, self).load(xml)
+        super(Sensor, self).load(xml)
 
         self._mqttBroker = xml.attrib.get('mqttBroker', None)
         self._mqttTopic = xml.attrib.get('mqttTopic', None)
@@ -28,7 +28,7 @@ class TemperatureSensor(Device):
         self.subscribe()
 
     def save(self, xml):
-        super(TemperatureSensor, self).save(xml)
+        super(Sensor, self).save(xml)
 
         if self._mqttBroker:
             xml.attrib['mqttBroker'] = self._mqttBroker
@@ -38,7 +38,7 @@ class TemperatureSensor(Device):
             del xml.attrib['mqttTopic']
 
     def json(self):
-        json = super(TemperatureSensor, self).json()
+        json = super(Sensor, self).json()
         json.update({'mqtt_broker': self._mqttBroker, 'mqtt_topic': self._mqttTopic})
         return json
 

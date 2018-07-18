@@ -2,7 +2,7 @@ import itertools
 from xml.etree.ElementTree import parse, ElementTree, Element, SubElement
 
 from .CommentedTreeBuilder import CommentedTreeBuilder
-from .device.TemperatureSensor import TemperatureSensor
+from .device.Sensor import Sensor
 from .device.HVAC import HVAC
 
 
@@ -65,8 +65,8 @@ class DeviceSet(object):
     #     self.save()
 
     def create_device(self, type):
-        if type == TemperatureSensor.TYPE:
-            return TemperatureSensor(self._mqtt, self._system_state)
+        if type == Sensor.TYPE:
+            return Sensor(self._mqtt, self._system_state)
         elif type == HVAC.TYPE:
             return HVAC()
         else:

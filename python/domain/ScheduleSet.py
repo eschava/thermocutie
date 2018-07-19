@@ -1,5 +1,10 @@
-import itertools
 from xml.etree.ElementTree import parse, ElementTree, Element, SubElement
+
+try:
+    from itertools import izip_longest as zip_longest
+except ImportError:
+    # noinspection PyUnresolvedReferences
+    from itertools import zip_longest
 
 from .CommentedTreeBuilder import CommentedTreeBuilder
 from .WeekSchedule import WeekSchedule
@@ -29,7 +34,7 @@ class ScheduleSet(object):
 
         root = xml.getroot()
 
-        for schedule_xml, schedule in itertools.izip_longest(root.iter('Schedule'), self._schedules):
+        for schedule_xml, schedule in zip_longest(root.iter('Schedule'), self._schedules):
             if schedule is None:
                 root.remove(schedule_xml)
             else:

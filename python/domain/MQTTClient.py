@@ -5,6 +5,7 @@ import paho.mqtt.client as mqtt
 try:
     from urlparse import urlparse
 except ImportError:
+    # noinspection PyUnresolvedReferences
     from urllib.parse import urlparse
 
 
@@ -95,4 +96,5 @@ class MQTTClient(object):
             if len(subscribers) == 0:
                 self._client.unsubscribe(topic)
                 del self._subscribers[topic]
-                del self._last_message[topic]
+                if topic in self._last_message:
+                    del self._last_message[topic]

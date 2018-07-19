@@ -1,5 +1,10 @@
-import itertools
 from xml.etree.ElementTree import SubElement
+
+try:
+    from itertools import izip_longest as zip_longest
+except ImportError:
+    # noinspection PyUnresolvedReferences
+    from itertools import zip_longest
 
 
 class WeekSchedule(object):
@@ -19,7 +24,7 @@ class WeekSchedule(object):
         xml.attrib['type'] = 'week'
         xml.attrib['name'] = self._name
 
-        for dayset_xml, dayset in itertools.izip_longest(xml.iter('DaySet'), self._day_sets):
+        for dayset_xml, dayset in zip_longest(xml.iter('DaySet'), self._day_sets):
             if dayset is None:
                 xml.remove(dayset_xml)
             else:
@@ -28,7 +33,7 @@ class WeekSchedule(object):
                 dayset.save(dayset_xml)
 
     def update(self, changes):
-        for dayset_change, dayset in itertools.izip_longest(changes['daySets'], self._day_sets):
+        for dayset_change, dayset in zip_longest(changes['daySets'], self._day_sets):
             if dayset_change is None:
                 self._day_sets.remove(dayset)
             else:
@@ -69,7 +74,7 @@ class DaySet(object):
         xml.attrib['name'] = self._name
         xml.attrib['days'] = self._days
 
-        for period_xml, period in itertools.izip_longest(xml.iter('Period'), self._periods):
+        for period_xml, period in zip_longest(xml.iter('Period'), self._periods):
             if period is None:
                 xml.remove(period_xml)
             else:
@@ -81,7 +86,7 @@ class DaySet(object):
         self._name = change['name']
         self._days = change['days']
 
-        for period_change, period in itertools.izip_longest(change['periods'], self._periods):
+        for period_change, period in zip_longest(change['periods'], self._periods):
             if period_change is None:
                 self._periods.remove(period)
             else:

@@ -1,5 +1,10 @@
-import itertools
 from xml.etree.ElementTree import parse, ElementTree, Element, SubElement
+
+try:
+    from itertools import izip_longest as zip_longest
+except ImportError:
+    # noinspection PyUnresolvedReferences
+    from itertools import zip_longest
 
 from .CommentedTreeBuilder import CommentedTreeBuilder
 from .TemperatureMode import TemperatureMode
@@ -27,7 +32,7 @@ class TemperatureModeSet(object):
 
         root = xml.getroot()
 
-        for mode_xml, mode in itertools.izip_longest(root.iter('Mode'), self._modes):
+        for mode_xml, mode in zip_longest(root.iter('Mode'), self._modes):
             if mode is None:
                 root.remove(mode_xml)
             else:

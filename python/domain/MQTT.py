@@ -1,6 +1,11 @@
 import os
-import itertools
 from xml.etree.ElementTree import parse, ElementTree, Element, SubElement
+
+try:
+    from itertools import izip_longest as zip_longest
+except ImportError:
+    # noinspection PyUnresolvedReferences
+    from itertools import zip_longest
 
 from .MQTTClient import MQTTClient
 from .CommentedTreeBuilder import CommentedTreeBuilder
@@ -46,7 +51,7 @@ class MQTT(object):
         if clients is None:
             clients = SubElement(root, 'Clients')
 
-        for client_xml, client in itertools.izip_longest(clients.iter('Client'), self._clients):
+        for client_xml, client in zip_longest(clients.iter('Client'), self._clients):
             if client is None:
                 clients.remove(client_xml)
             else:

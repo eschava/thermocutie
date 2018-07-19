@@ -1,9 +1,14 @@
-import itertools
 from xml.etree.ElementTree import parse, ElementTree, Element, SubElement
 
 from .CommentedTreeBuilder import CommentedTreeBuilder
 from .device.Sensor import Sensor
 from .device.HVAC import HVAC
+
+try:
+    from itertools import izip_longest as zip_longest
+except ImportError:
+    # noinspection PyUnresolvedReferences
+    from itertools import zip_longest
 
 
 class DeviceSet(object):
@@ -31,7 +36,7 @@ class DeviceSet(object):
 
         root = xml.getroot()
 
-        for device_xml, device in itertools.izip_longest(root, self._devices):
+        for device_xml, device in zip_longest(root, self._devices):
             if device is None:
                 root.remove(device_xml)
             else:

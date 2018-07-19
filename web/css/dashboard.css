@@ -11,6 +11,11 @@
     padding-bottom: 0;
 }
 
+.widget-s-resizer {
+  position: absolute;
+  bottom: -2px !important;
+}
+
 .widget-more {
     position: absolute;
     top: 12px;

@@ -16,6 +16,22 @@
     <script src="/bower_components/md-color-picker/dist/mdColorPicker.min.js"></script>
     <script>
         app = angular.module('ThermoCutieApp', ['angular-websocket', 'ngMaterial', 'ngRoute', 'ngResource', 'ngTouch', 'mdColorPicker']);
+
+        // TODO: temporary fix for https://github.com/brianpkelley/md-color-picker/issues/100 issue
+        // TODO: taken from https://github.com/brianpkelley/md-color-picker/issues/100#issuecomment-316028858
+        app.config(function($provide) {
+            // Decorate the $mdDialog service using $provide.decorator
+            $provide.decorator("$mdDialog", function ($delegate) {
+                // Get a handle of the show method
+                var methodHandle = $delegate.show;
+                function decorateDialogShow () {
+                    var args = angular.extend({}, arguments[0], { multiple: true })
+                    return methodHandle(args);
+                }
+                $delegate.show = decorateDialogShow;
+                return $delegate;
+            });
+        });
     </script>
     <script src="/js/routing.js"></script>
     <script src="/js/globalEvents.js"></script>

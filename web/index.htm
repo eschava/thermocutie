@@ -14,10 +14,15 @@
     <script src="/bower_components/ngtouch/src/ngTouch.js"></script>
     <script src="/bower_components/tinycolor/dist/tinycolor-min.js"></script>
     <script src="/bower_components/md-color-picker/dist/mdColorPicker.min.js"></script>
-    <script src="/bower_components/javascript-detect-element-resize/jquery.resize.js"></script>
+    <script src="/bower_components/javascript-detect-element-resize/detect-element-resize.js"></script>
    	<script src="/bower_components/angular-gridster/dist/angular-gridster.min.js"></script>
     <script>
         app = angular.module('ThermoCutieApp', ['angular-websocket', 'ngMaterial', 'ngRoute', 'ngResource', 'ngTouch', 'mdColorPicker', 'gridster']);
+
+        app.config(function($mdThemingProvider) {
+          $mdThemingProvider.theme('default')
+            .dark();
+        })
 
         // TODO: temporary fix for https://github.com/brianpkelley/md-color-picker/issues/100 issue
         // TODO: taken from https://github.com/brianpkelley/md-color-picker/issues/100#issuecomment-316028858

@@ -1,29 +1,31 @@
 <md-dialog aria-label="{{title}}">
-    <form>
-        <md-dialog-content>
-            <md-input-container class="md-block">
-                <label>Device</label>
-                <md-select ng-model="widget.device">
-                  <md-option ng-repeat="device in devices" value="{{device}}">
-                      {{device}}
-                  </md-option>
-                </md-select>
-            </md-input-container>
+    <form ng-cloak>
+        <md-dialog-content layout="column">
+            <div class="md-dialog-content">
+                <md-input-container class="md-block">
+                    <label>Device</label>
+                    <md-select ng-model="widget.device">
+                      <md-option ng-repeat="device in devices" value="{{device}}">
+                          {{device}}
+                      </md-option>
+                    </md-select>
+                </md-input-container>
 
-            <md-input-container class="md-block">
-                <label>Prefix</label>
-                <input ng-model="widget.prefix">
-            </md-input-container>
+                <md-input-container class="md-block">
+                    <label>Prefix</label>
+                    <input ng-model="widget.prefix">
+                </md-input-container>
 
-            <md-input-container class="md-block">
-                <label>Suffix</label>
-                <input ng-model="widget.suffix">
-            </md-input-container>
+                <md-input-container class="md-block">
+                    <label>Suffix</label>
+                    <input ng-model="widget.suffix">
+                </md-input-container>
 
-            <md-input-container class="md-block">
-                <label>Color</label>
-                <div md-color-picker ng-model="widget.color" skip-hide="true" preserve-scope="true"></div>
-            </md-input-container>
+                <md-input-container class="md-block">
+                    <label>Color</label>
+                    <div md-color-picker ng-model="widget.color" skip-hide="true" preserve-scope="true"></div>
+                </md-input-container>
+            </div>
         </md-dialog-content>
 
         <md-dialog-actions layout="row">

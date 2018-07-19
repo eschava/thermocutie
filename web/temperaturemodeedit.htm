@@ -1,29 +1,31 @@
 <md-dialog aria-label="{{title}}">
     <form>
-        <md-dialog-content>
-            <md-input-container class="md-block">
-                <label>Name</label>
-                <input ng-model="mode.name" ng-disabled="edit">
-            </md-input-container>
+        <md-dialog-content layout="column">
+            <div class="md-dialog-content">
+                <md-input-container class="md-block">
+                    <label>Name</label>
+                    <input ng-model="mode.name" ng-disabled="edit">
+                </md-input-container>
 
-            <md-input-container class="md-block">
-                <label>Temperature</label>
-                <input type="number" ng-model="mode.temperature">
-            </md-input-container>
+                <md-input-container class="md-block">
+                    <label>Temperature</label>
+                    <input type="number" ng-model="mode.temperature">
+                </md-input-container>
 
-            <md-input-container class="md-block">
-                <label>Color</label>
-                <div md-color-picker ng-model="mode.color" skip-hide="true" preserve-scope="true"></div>
-            </md-input-container>
+                <md-input-container class="md-block">
+                    <label>Color</label>
+                    <div md-color-picker ng-model="mode.color" skip-hide="true" preserve-scope="true"></div>
+                </md-input-container>
 
-            <md-input-container class="md-block">
-              <label>Icon</label>
-              <md-select ng-model="mode.icon">
-                <md-option ng-repeat="icon in icons" value="{{icon}}">
-                    <md-icon md-menu-origin md-svg-src="/icons/cumulus/{{icon}}.svg"></md-icon>
-                </md-option>
-              </md-select>
-            </md-input-container>
+                <md-input-container class="md-block">
+                  <label>Icon</label>
+                  <md-select ng-model="mode.icon">
+                    <md-option ng-repeat="icon in icons" value="{{icon}}">
+                        <md-icon md-menu-origin md-svg-src="/icons/cumulus/{{icon}}.svg"></md-icon>
+                    </md-option>
+                  </md-select>
+                </md-input-container>
+            </div>
         </md-dialog-content>
 
         <md-dialog-actions layout="row">

@@ -10,10 +10,10 @@ class MqttRest(Resource):
         self.mqtt = kwargs['mqtt']
 
     def get(self):
-        return map(
+        return list(map(
             lambda b: {'name': b.name, 'clientId': b.client_id, 'uri': b.uri},
             self.mqtt.get_clients()
-        )
+        ))
 
     @classmethod
     def register(cls, api, mqtt):

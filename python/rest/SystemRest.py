@@ -10,10 +10,10 @@ class SystemRest(Resource):
         self.cutie = kwargs['cutie']
 
     def get(self):
-        return map(
+        return list(map(
             lambda s: {'name': s.name, 'title': s.title},
             self.cutie.get_systems()
-        )
+        ))
 
     def put(self, name, title):
         self.cutie.add_system(name, title)

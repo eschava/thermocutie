@@ -11,10 +11,10 @@ class TemperatureModeRest(Resource):
 
     def get(self, system):
         system = self.cutie.get_system(system)
-        return map(
+        return list(map(
             lambda m: {'name': m.name, 'color': m.color, 'icon': m.icon, 'temperature': m.temperature},
             system.temperature_modes.list()
-        )
+        ))
 
     def post(self, system):
         content = request.get_json(silent=True)

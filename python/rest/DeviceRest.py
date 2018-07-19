@@ -12,15 +12,15 @@ class DeviceRest(Resource):
     def get(self, system, name=None):
         system = self.cutie.get_system(system)
         if name is None:
-            return map(
+            return list(map(
                 lambda device: device.json(),
                 system.devices.list()
-            )
+            ))
         else:  # device by type
-            return map(
+            return list(map(
                 lambda device: device.name,
                 system.devices.list_by_type(name)
-            )
+            ))
 
     def put(self, system, name):
         content = request.get_json(silent=True)

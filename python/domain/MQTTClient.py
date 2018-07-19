@@ -1,7 +1,11 @@
+import logging
 import threading
 import wrapt
 import paho.mqtt.client as mqtt
-from urlparse import urlparse
+try:
+    from urlparse import urlparse
+except ImportError:
+    from urllib.parse import urlparse
 
 
 class MQTTClient(object):
@@ -61,9 +65,13 @@ class MQTTClient(object):
     def on_message(self, client, userdata, message):
         subscribers = self._subscribers.get(message.topic, None)
         if subscribers is not None:
-            self._last_message[message.topic] = message.payload
+            payload = message.payload.decode("utf-8")
+            self._last_message[message.topic] = payload
             for s in subscribers:
-                s.mqtt_message(message.topic, message.payload)
+                try:
+                    s.mqtt_message(message.topic, payload)
+                except:
+                    logging.exception(message.topic)
 
     @wrapt.synchronized
     def subscribe(self, topic, listener):

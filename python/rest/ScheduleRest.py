@@ -12,13 +12,13 @@ class ScheduleRest(Resource):
     def get(self, system, name):
         system = self.cutie.get_system(system)
         schedule = system.get_schedule(name)
-        return {'name': schedule.name, 'daySets': map(
-            lambda ds: {'name': ds.name, 'days': ds.days, 'periods': map(
+        return {'name': schedule.name, 'daySets': list(map(
+            lambda ds: {'name': ds.name, 'days': ds.days, 'periods': list(map(
                 lambda p: {'mode': p.mode, 'start': p.start},
                 ds.periods
-            )},
+            ))},
             schedule.day_sets
-        )}
+        ))}
 
     def put(self, system):
         system = self.cutie.get_system(system)

@@ -11,7 +11,7 @@ class SystemStateWebSocket(object):
     def send(self, data):
         try:
             self.websocket.send(json.dumps(data))
-        except Exception, e:
+        except Exception as e:
             logging.warn("Websocket error '%s', unsubscribing device state listener" % str(e))
             self.cutie.unsubscribe(self.name, self.send)
 

@@ -44,6 +44,9 @@ class DeviceSet(object):
     def list(self):
         return self._devices
 
+    def list_by_type(self, type):
+        return [d for d in self._devices if d.type == type]
+
     def update(self, name, changes):
         device = next((s for s in self._devices if s.name == name), None)
         if device is None:

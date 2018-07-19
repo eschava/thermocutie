@@ -14,8 +14,10 @@
     <script src="/bower_components/ngtouch/src/ngTouch.js"></script>
     <script src="/bower_components/tinycolor/dist/tinycolor-min.js"></script>
     <script src="/bower_components/md-color-picker/dist/mdColorPicker.min.js"></script>
+    <script src="/bower_components/javascript-detect-element-resize/jquery.resize.js"></script>
+   	<script src="/bower_components/angular-gridster/dist/angular-gridster.min.js"></script>
     <script>
-        app = angular.module('ThermoCutieApp', ['angular-websocket', 'ngMaterial', 'ngRoute', 'ngResource', 'ngTouch', 'mdColorPicker']);
+        app = angular.module('ThermoCutieApp', ['angular-websocket', 'ngMaterial', 'ngRoute', 'ngResource', 'ngTouch', 'mdColorPicker', 'gridster']);
 
         // TODO: temporary fix for https://github.com/brianpkelley/md-color-picker/issues/100 issue
         // TODO: taken from https://github.com/brianpkelley/md-color-picker/issues/100#issuecomment-316028858
@@ -52,6 +54,7 @@
     <!-- style sheets -->
     <link rel="stylesheet" href="/bower_components/angular-material/angular-material.min.css"/>
     <link rel="stylesheet" href="/bower_components/md-color-picker/dist/mdColorPicker.min.css"/>
+    <link rel="stylesheet" href="/bower_components/angular-gridster/dist/angular-gridster.min.css"/>
 </head>
 <body ng-app="ThermoCutieApp">
     <div class="ng-view"></div>

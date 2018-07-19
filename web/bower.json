@@ -19,6 +19,7 @@
     "angular-resource": "^1.6.1",
     "angular-websocket": "^2.0.0",
     "ngtouch": "^1.0.1",
-    "md-color-picker": "^0.2.6"
+    "md-color-picker": "^0.2.6",
+    "angular-gridster": "^0.13.15"
   }
 }

@@ -1,9 +1,12 @@
-Current temperature: <span>{{CurrentState.state.Temperature}} *C</span><br/>
-Target temperature: <span>{{CurrentState.state.targetMode.temperature}} *C</span><br/>
-Target mode: <span>
-    <md-icon ng-if="CurrentState.state.targetMode.icon" md-menu-origin md-svg-src="/icons/cumulus/{{CurrentState.state.targetMode.icon}}.svg"></md-icon>
-    {{CurrentState.state.targetMode.name}}
-</span><br/>
+<div gridster="gridsterOpts">
+	<ul>
+		<li gridster-item="widget" ng-repeat="widget in widgets">
+            <div class="box">
+                {{widget.type}}
+            </div>
+        </li>
+	</ul>
+</div>
 
 <br/><br/><br/>
 <md-button class="md-primary" href="settings">Settings</md-button>

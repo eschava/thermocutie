@@ -10,7 +10,9 @@ class MqttInternalRest(Resource):
         self.mqtt = kwargs['mqtt']
 
     def get(self):
-        return {'enabled': self.mqtt.server_enabled, 'port': self.mqtt.server_port}
+        return {'supported': self.mqtt.server_supported,
+                'enabled': self.mqtt.server_enabled,
+                'port': self.mqtt.server_port}
 
     def post(self):
         content = request.get_json(silent=True)

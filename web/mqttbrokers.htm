@@ -14,20 +14,24 @@
     </tr>
 </table>
 
-<h1>Internal broker</h1>
 <form novalidate="novalidate" class="form-horizontal">
-    <div class="control-group">
-        <label class="control-label" for="inputEnabled">Enabled:</label>
-        <div class="controls">
-            <input type="checkbox" id="inputEnabled" ng-model="internalBroker.enabled">
+    <fieldset ng-disabled="!internalBroker.supported">
+        <h1>Internal broker {{internalBroker.supported ? "" : " (not supported)"}}</h1>
+
+        <div class="control-group">
+            <label class="control-label" for="inputEnabled">Enabled:</label>
+            <div class="controls">
+                <input type="checkbox" id="inputEnabled" ng-model="internalBroker.enabled">
+            </div>
         </div>
-    </div>
-    <div class="control-group">
-        <label class="control-label" for="inputPort">Port:</label>
-        <div class="controls">
-            <input type="number" id="inputPort" ng-model="internalBroker.port"/>
+        <div class="control-group">
+            <label class="control-label" for="inputPort">Port:</label>
+            <div class="controls">
+                <input type="number" id="inputPort" ng-model="internalBroker.port"/>
+            </div>
         </div>
-    </div>
+    </fieldset>
+
     <div class="control-group">
         <div class="controls">
             <md-button ng-click="back()">Cancel</md-button>

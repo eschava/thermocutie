@@ -1,4 +1,5 @@
 import os
+import logging
 from xml.etree.ElementTree import parse, ElementTree, Element, SubElement
 
 try:
@@ -8,6 +9,7 @@ except ImportError:
     from itertools import zip_longest
 
 from .MQTTClient import MQTTClient
+from .MQTTServer import MQTTServer
 from .CommentedTreeBuilder import CommentedTreeBuilder
 
 
@@ -15,8 +17,7 @@ class MQTT(object):
     def __init__(self, folder):
         self._config_file = os.path.join(folder, "mqtt.xml")
         self._server_enabled = False
-        self._server_port = 0
-        self._server = None
+        self._server = MQTTServer()
         self._clients = []
 
     def load(self):
@@ -26,10 +27,13 @@ class MQTT(object):
         server = root.find('Server')
         if server is not None:
             self._server_enabled = server.attrib['enabled'].lower() == 'true'
-            self._server_port = int(server.attrib['port'])
+            self._server.port = int(server.attrib['port'])
 
             if self._server_enabled:
-                self.start_server()
+                if self._server.supported:
+                    self._server.start()
+                else:
+                    logging.error('MQTT server is not supported')
 
         for client in root.findall('Clients/Client'):
             self._clients.append(MQTTClient(client))
@@ -45,7 +49,7 @@ class MQTT(object):
         if server is None:
             server = SubElement(root, 'Server')
         server.attrib['enabled'] = 'true' if self._server_enabled else 'false'
-        server.attrib['port'] = str(self._server_port)
+        server.attrib['port'] = str(self.server_port)
 
         clients = root.find('Clients')
         if clients is None:
@@ -65,29 +69,27 @@ class MQTT(object):
         return self._clients
 
     @property
+    def server_supported(self):
+        return self._server.supported
+
+    @property
     def server_enabled(self):
         return self._server_enabled
 
     @property
     def server_port(self):
-        return self._server_port
+        return self._server.port
 
     def server_update(self, enabled, port):
         if self._server_enabled != enabled:
             if enabled:
-                self.start_server()
+                self._server.start()
             else:
-                self.stop_server()
+                self._server.stop()
 
         self._server_enabled = enabled
-        self._server_port = port
+        self._server.port = port
         self.save()
-
-    def start_server(self):
-        pass
-
-    def stop_server(self):
-        pass
 
     def subscribe(self, name, topic, listener):
         client = next((c for c in self._clients if c.name == name), None)

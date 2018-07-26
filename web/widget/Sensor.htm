@@ -1,5 +1,5 @@
-<div style="background-color:{{widget.color}}; height: 100%;">
-    {{widget.prefix}}
-    {{CurrentState.state[widget.device]}}
-    {{widget.suffix}}
+<div style="background-color:{{widget.color}}; height: 100%; font-family: {{widget.font}}; font-size: {{widget.textSize}}px; color: {{widget.textColor}}; text-align:center; position: relative;">
+    <p style="margin: 0; position: relative; top: 50%; left: 50%; -ms-transform: translate(-50%, -50%);transform: translate(-50%, -50%);">
+        {{widget.prefix}} {{CurrentState.state[widget.device]}} {{widget.suffix}}
+    </p>
 </div>

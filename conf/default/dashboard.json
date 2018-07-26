@@ -1,13 +1,16 @@
 [
     {
         "col": 0,
-        "color": "blue", 
-        "device": "Temperature", 
-        "prefix": "Current:", 
-        "row": 0, 
-        "sizeX": 1, 
-        "sizeY": 1, 
-        "suffix": "\u00b0C", 
+        "color": "blue",
+        "device": "Temperature",
+        "font": "Times New Roman",
+        "prefix": "Current:",
+        "row": 0,
+        "sizeX": 4,
+        "sizeY": 4,
+        "suffix": "\u00b0C",
+        "textColor": "#2d0909",
+        "textSize": 50,
         "type": "Sensor"
     }
 ]

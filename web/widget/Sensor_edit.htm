@@ -25,6 +25,35 @@
                     <label>Color</label>
                     <div md-color-picker ng-model="widget.color" skip-hide="true" preserve-scope="true"></div>
                 </md-input-container>
+
+                <md-input-container class="md-block">
+                    <label>Font</label>
+                    <md-select ng-model="widget.font">
+                        <md-option value="Arial">Arial</md-option>
+                        <md-option value="Consolas">Consolas</md-option>
+                        <md-option value="Courier New">Courier New</md-option>
+                        <md-option value="Georgia">Georgia</md-option>
+                        <md-option value="Helvetica">Helvetica</md-option>
+                        <md-option value="Impact">Impact</md-option>
+                        <md-option value="Lucida Sans">Lucida Sans</md-option>
+                        <md-option value="Palatino">Palatino</md-option>
+                        <md-option value="Tahoma">Tahoma</md-option>
+                        <md-option value="Trebuchet">Trebuchet</md-option>
+                        <md-option value="Verdana">Verdana</md-option>
+                        <md-option value="Times New Roman">Times New Roman</md-option>
+                        <md-option value="Brush Script">Brush Script</md-option>
+                    </md-select>
+                </md-input-container>
+
+                <md-input-container class="md-block">
+                    <label>Text color</label>
+                    <div md-color-picker ng-model="widget.textColor" skip-hide="true" preserve-scope="true"></div>
+                </md-input-container>
+
+                <md-input-container class="md-block">
+                    <label>Text size</label>
+                    <input type="number" ng-model="widget.textSize"/>
+                </md-input-container>
             </div>
         </md-dialog-content>
 

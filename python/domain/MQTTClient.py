@@ -10,16 +10,18 @@ except ImportError:
 
 
 class MQTTClient(object):
-    def __init__(self, xml):
-        self._name = xml.attrib['name']
-        self._client_id = xml.attrib['clientId']
-        self._uri = xml.attrib['uri']
+    def __init__(self, xml=None):
+        if xml is not None:
+            self._name = xml.attrib['name']
+            self._client_id = xml.attrib['clientId']
+            self._uri = xml.attrib['uri']
         self._subscribers = {}
         self._last_message = {}
 
         self._connected = False
         self._client = None
-        self.connect()
+        if xml is not None:
+            self.connect()
 
     def save(self, xml):
         xml.attrib['name'] = self._name
@@ -27,16 +29,32 @@ class MQTTClient(object):
         xml.attrib['uri'] = self._uri
 
     @property
+    def connected(self):
+        return self._connected
+
+    @property
     def name(self):
         return self._name
+
+    @name.setter
+    def name(self, value):
+        self._name = value
 
     @property
     def client_id(self):
         return self._client_id
 
+    @client_id.setter
+    def client_id(self, value):
+        self._client_id = value
+
     @property
     def uri(self):
         return self._uri
+
+    @uri.setter
+    def uri(self, value):
+        self._uri = value
 
     def connect(self):
         self._connected = False
@@ -48,10 +66,16 @@ class MQTTClient(object):
         t = threading.Thread(name=self._name + " MQTT loop", target=self.start_loop)
         t.start()
 
+    def disconnect(self):
+        self._client.disconnect()
+
     def start_loop(self):
-        url = urlparse(self._uri)
-        self._client.connect(url.hostname, url.port)
-        self._client.loop_forever()
+        try:
+            url = urlparse(self._uri)
+            self._client.connect(url.hostname, url.port)
+            self._client.loop_forever()
+        except:
+            logging.exception('Cannot connect to MQTT server at ' + self._uri)
 
     # noinspection PyUnusedLocal
     def on_connect(self, client, userdata, flags, rc):

@@ -1,0 +1,31 @@
+<md-dialog aria-label="{{title}}">
+    <form>
+        <md-dialog-content layout="column">
+            <div class="md-dialog-content">
+                <md-input-container class="md-block">
+                    <label>Name</label>
+                    <input ng-model="broker.name" ng-disabled="edit">
+                </md-input-container>
+
+                <md-input-container class="md-block">
+                    <label>URI</label>
+                    <input ng-model="broker.uri">
+                </md-input-container>
+
+                <md-input-container class="md-block">
+                    <label>Client ID</label>
+                    <input ng-model="broker.clientId">
+                </md-input-container>
+            </div>
+        </md-dialog-content>
+
+        <md-dialog-actions layout="row">
+            <md-button ng-click="save()">
+                {{edit ? 'Save' : 'Add'}}
+            </md-button>
+            <md-button ng-click="cancel()">
+                Cancel
+            </md-button>
+        </md-dialog-actions>
+    </form>
+</md-dialog>

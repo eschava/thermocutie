@@ -68,6 +68,38 @@ class MQTT(object):
     def get_clients(self):
         return self._clients
 
+    def add_client(self, client):
+        self._clients.append(client)
+        self.save()
+
+    def update_client(self, client_changes):
+        name = client_changes['name']
+        client = next((m for m in self._clients if m.name == name), None)
+        client.uri = client_changes['uri']
+        client.client_id = client_changes['clientId']
+        client.disconnect()
+        self.save()
+
+    def rename_client(self, old_name, new_name):
+        client = next((m for m in self._clients if m.name == old_name), None)
+        client.name = new_name
+        self.save()
+
+    def delete_client(self, name):
+        client = next((m for m in self._clients if m.name == name), None)
+        client.disconnect()
+        self._clients[:] = [m for m in self._clients if m.name != name]
+        self.save()
+
+    def connect_client(self, name):
+        # TODO: connect synchronously
+        client = next((m for m in self._clients if m.name == name), None)
+        client.connect()
+
+    def disconnect_client(self, name):
+        client = next((m for m in self._clients if m.name == name), None)
+        client.disconnect()
+
     @property
     def server_supported(self):
         return self._server.supported

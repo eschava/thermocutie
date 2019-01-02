@@ -10,9 +10,17 @@
         <td>{{broker.name}}</td>
         <td>{{broker.uri}}</td>
         <td>{{broker.clientId}}</td>
-        <td></td>
+        <td>
+            <md-button ng-if="!broker.connected" ng-click="connect(broker)">Connect</md-button>
+            <md-button ng-if="broker.connected" ng-click="disconnect(broker)">Disconnect</md-button>
+        </td>
+        <td><md-button ng-click="edit(broker)">Edit</md-button></td>
+        <td><md-button ng-click="rename(broker)">Rename</md-button></td>
+        <td><md-button ng-click="delete(broker)">Delete</md-button></td>
     </tr>
 </table>
+
+<md-button ng-click="add()">Add</md-button>
 
 <form novalidate="novalidate" class="form-horizontal">
     <fieldset ng-disabled="!internalBroker.supported">

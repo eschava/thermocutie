@@ -1,11 +1,11 @@
 <div gridster="gridsterOpts">
 	<ul>
 		<li gridster-item="widget" ng-repeat="widget in widgets"
-            ng-mouseover="widget.more = true"
-            ng-mouseout="widget.more = false"
+            ng-mouseover="activeWidget = widget"
+            ng-mouseout="activeWidget = null"
         >
             <ng-include src="'/widget/' + widget.type + '.htm'"></ng-include>
-            <div class="widget-more" ng-show="widget.more" ng-click="more(widget)">
+            <div class="widget-more" ng-show="activeWidget == widget" ng-click="more(widget)">
                 <md-icon md-menu-origin md-svg-src="/icons/material/more_vert.svg"></md-icon>
             </div>
         </li>

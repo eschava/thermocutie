@@ -6,7 +6,7 @@ from .TemperatureModeSet import TemperatureModeSet
 from .ScheduleSet import ScheduleSet
 
 
-class Cutie:
+class Cutie(object):
     def __init__(self, folder, mqtt):
         self._folder = folder
         self._mqtt = mqtt
@@ -22,11 +22,11 @@ class Cutie:
         self._temperature_modes.load()
         self._schedule_set.load()
 
-    def save(self):
-        self._settings.save(os.path.join(self._folder, 'settings.xml'))
-        self._devices.save()
-        self._temperature_modes.save()
-        self._schedule_set.save()
+    # def save(self):
+    #     self._settings.save(os.path.join(self._folder, 'settings.xml'))
+    #     self._devices.save()
+    #     self._temperature_modes.save()
+    #     self._schedule_set.save()
 
     @property
     def devices(self):
@@ -35,6 +35,16 @@ class Cutie:
     @property
     def temperature_modes(self):
         return self._temperature_modes
+
+    @property
+    def dashboard(self):
+        with open(os.path.join(self._folder, 'dashboard.json'), 'r') as f:
+            return f.read()
+
+    @dashboard.setter
+    def dashboard(self, value):
+        with open(os.path.join(self._folder, 'dashboard.json'), 'w') as f:
+            f.write(value)
 
     def get_schedule(self, name):
         return self._schedule_set.get_schedule(name)
@@ -48,15 +58,6 @@ class Cutie:
     def unsubscribe(self, listener):
         self._state.unsubscribe(listener)
 
-    @property
-    def dashboard(self):
-        with open(os.path.join(self._folder, 'dashboard.json'), 'r') as f:
-            return f.read()
-
-    @dashboard.setter
-    def dashboard(self, value):
-        with open(os.path.join(self._folder, 'dashboard.json'), 'w') as f:
-            f.write(value)
 
 
 

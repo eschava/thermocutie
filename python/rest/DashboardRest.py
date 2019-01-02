@@ -12,10 +12,10 @@ class DashboardRest(Resource):
 
     def get(self):
         return json.loads(self.cutie.dashboard)
-        # return system.dashboard
 
     def put(self):
-        self.cutie.dashboard = json.dumps(request.get_json(silent=True), indent=4, sort_keys=True)
+        dumps = json.dumps(request.get_json(silent=True), indent=4, sort_keys=True)
+        self.cutie.dashboard = dumps
 
     @classmethod
     def register(cls, api, cutie):

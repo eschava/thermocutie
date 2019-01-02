@@ -112,6 +112,12 @@ app.controller('MainController', function ($scope, $timeout, $mdDialog, CurrentS
         });
     }
 
+    $scope.duplicateWidget = function() {
+        var widget = $scope.currentWidget;
+        $scope.widgets.push(angular.copy(widget));
+        $scope.saveWidgets();
+    }
+
     $scope.removeWidget = function() {
         var widget = $scope.currentWidget;
         var confirm = $mdDialog.confirm()

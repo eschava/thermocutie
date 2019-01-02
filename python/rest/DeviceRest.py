@@ -22,19 +22,19 @@ class DeviceRest(Resource):
                 devices.list_by_type(name)
             ))
 
+    def post(self):
+        content = request.get_json(silent=True)
+        devices = self.cutie.devices
+        devices.add(content)
+
     def put(self, name):
         content = request.get_json(silent=True)
         devices = self.cutie.devices
         devices.update(name, content)
 
-    # def post(self):
-    #     content = request.get_json(silent=True)
-    #     modes = self.cutie.temperature_modes
-    #     modes.add(content)
-    #
-    # def delete(self, name):
-    #     modes = self.cutie.temperature_modes
-    #     modes.delete(name)
+    def delete(self, name):
+        devices = self.cutie.devices
+        devices.delete(name)
 
     @classmethod
     def register(cls, api, cutie):

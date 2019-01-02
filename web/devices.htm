@@ -1,6 +1,22 @@
 <h2>Devices</h2>
 <div ng-repeat="device in devices">
     <ng-include src="'/device/' + device.type + '.htm'"></ng-include>
+    <md-button ng-click="duplicate(device)">Duplicate</md-button>
+    <md-button ng-click="edit(device)">Edit</md-button>
+    <md-button ng-click="delete(device)">Delete</md-button>
     <hr/>
 </div>
+
+<md-button ng-click="addMenu()">Add</md-button>
 <md-button ng-click="back()">Back</md-button>
+
+<md-menu>
+    <md-button id="addDeviceMenu" ng-click="$mdMenu.open($event)" style="position:fixed; visibility:hidden;">Click</md-button>
+    <md-menu-content width="2">
+        <md-menu-item ng-repeat="deviceType in deviceTypes">
+            <md-button ng-click="add(deviceType)">
+                {{deviceType}}
+            </md-button>
+        </md-menu-item>
+    </md-menu-content>
+</md-menu>

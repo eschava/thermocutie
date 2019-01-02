@@ -52,6 +52,13 @@ class DeviceSet(object):
     def list_by_type(self, type):
         return [d for d in self._devices if d.type == type]
 
+    def add(self, changes):
+        type = changes['type']
+        device = self.create_device(type)
+        device.update(changes)
+        self._devices.append(device)
+        self.save()
+
     def update(self, name, changes):
         device = next((s for s in self._devices if s.name == name), None)
         if device is None:
@@ -59,18 +66,11 @@ class DeviceSet(object):
         device.update(changes)
         self.save()
 
-    # def add(self, mode_changes):
-    #     mode = TemperatureMode()
-    #     mode.name = mode_changes['name']
-    #     mode.icon = mode_changes['icon']
-    #     mode.color = mode_changes['color']
-    #     mode.temperature = mode_changes['temperature']
-    #     self._modes.append(mode)
-    #     self.save()
-    #
-    # def delete(self, name):
-    #     self._modes[:] = [m for m in self._modes if m.name != name]
-    #     self.save()
+    def delete(self, name):
+        device = next((s for s in self._devices if s.name == name), None)
+        device.unsubscribe()
+        self._devices[:] = [m for m in self._devices if m.name != name]
+        self.save()
 
     def create_device(self, type):
         if type == Sensor.TYPE:

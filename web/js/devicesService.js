@@ -1,7 +1,7 @@
 app.factory('DevicesService', function ($resource) {
-    return $resource('/rest/device/:system/:name', {}, {
-        getDevices:  { method: 'GET', isArray: true, params: {system: '@system'} },
-        getDevicesByType:  { method: 'GET', isArray: true, params: {system: '@system', name: '@name'} },
-        update: { method: 'PUT', params: {system: '@system', name: '@name'} }
+    return $resource('/rest/device/:name', {}, {
+        getDevices:  { method: 'GET', isArray: true },
+        getDevicesByType:  { method: 'GET', isArray: true, params: {name: '@name'} },
+        update: { method: 'PUT', params: {name: '@name'} }
     })
 });

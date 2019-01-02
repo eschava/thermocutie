@@ -9,9 +9,8 @@ class ScheduleRest(Resource):
         super(ScheduleRest, self).__init__()
         self.cutie = kwargs['cutie']
 
-    def get(self, system, name):
-        system = self.cutie.get_system(system)
-        schedule = system.get_schedule(name)
+    def get(self, name):
+        schedule = self.cutie.get_schedule(name)
         return {'name': schedule.name, 'daySets': list(map(
             lambda ds: {'name': ds.name, 'days': ds.days, 'periods': list(map(
                 lambda p: {'mode': p.mode, 'start': p.start},
@@ -20,14 +19,13 @@ class ScheduleRest(Resource):
             schedule.day_sets
         ))}
 
-    def put(self, system):
-        system = self.cutie.get_system(system)
+    def put(self):
         content = request.get_json(silent=True)
-        system.update_schedule(content)  # TODO: move updating from JSON to separate class
+        self.cutie.update_schedule(content)  # TODO: move updating from JSON to separate class
 
     @classmethod
     def register(cls, api, cutie):
         api.add_resource(cls,
-                         cls.url + '/<system>',
-                         cls.url + '/<system>/<name>',
+                         cls.url,
+                         cls.url + '/<name>',
                          resource_class_kwargs={'cutie': cutie})

@@ -10,7 +10,6 @@ from rest.MqttInternalRest import MqttInternalRest
 from rest.MqttRest import MqttRest
 from rest.DeviceRest import DeviceRest
 from rest.ScheduleRest import ScheduleRest
-from rest.SystemRest import SystemRest
 from rest.DashboardRest import DashboardRest
 from rest.TemperatureModeRest import TemperatureModeRest
 from rest.SystemStateWebSocket import SystemStateWebSocket
@@ -33,7 +32,6 @@ rest = Blueprint('rest', __name__)
 rest_api = Api(rest)
 app.register_blueprint(rest, url_prefix='/rest')
 
-SystemRest.register(rest_api, cutie)
 MqttRest.register(rest_api, mqtt)
 MqttInternalRest.register(rest_api, mqtt)
 DeviceRest.register(rest_api, cutie)
@@ -45,14 +43,13 @@ DashboardRest.register(rest_api, cutie)
 @sockets.route('/state')
 def state_websocket(ws):
     while not ws.closed:
-        system_name = ws.receive()
-        listener = SystemStateWebSocket(cutie, ws, system_name)
-        cutie.subscribe(system_name, listener.send)
+        ws.receive()
+        listener = SystemStateWebSocket(cutie, ws)
+        cutie.subscribe(listener.send)
 
 
 # noinspection PyUnusedLocal
 @app.route('/<regex("[a-z]*"):page>')
-@app.route('/<regex("[a-z]+/[a-z]*"):page>')
 def controller(page):
     return send_from_directory(web_folder, 'index.htm')
 

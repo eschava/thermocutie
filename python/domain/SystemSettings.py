@@ -3,13 +3,13 @@ from .CommentedTreeBuilder import CommentedTreeBuilder
 
 
 class SystemSettings(object):
-    def __init__(self, title):
-        self._title = title
+    def __init__(self):
+        pass
 
     def load(self, f):
-        xml = parse(f)
-        root = xml.getroot()
-        self._title = root.attrib['title']
+        # xml = parse(f)
+        # root = xml.getroot()
+        pass
 
     def save(self, f):
         try:
@@ -17,14 +17,5 @@ class SystemSettings(object):
         except IOError:
             xml = ElementTree(Element('Settings'))
 
-        root = xml.getroot()
-        root.attrib['title'] = self._title
+        # root = xml.getroot()
         xml.write(f, encoding='UTF-8')
-
-    @property
-    def title(self):
-        return self._title
-
-    @title.setter
-    def title(self, value):
-        self._title = value

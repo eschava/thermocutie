@@ -1,6 +1,6 @@
-app.controller('DevicesController', function ($scope, $window, $currentSystem, $mdDialog, CurrentState, DevicesService, MqttBrokersService) {
+app.controller('DevicesController', function ($scope, $window, $mdDialog, CurrentState, DevicesService, MqttBrokersService) {
     $scope.CurrentState = CurrentState;
-    $scope.devices = DevicesService.getDevices({system: $currentSystem})
+    $scope.devices = DevicesService.getDevices()
 
     $scope.edit = function(device) {
         $mdDialog.show({
@@ -27,7 +27,7 @@ app.controller('DevicesController', function ($scope, $window, $currentSystem, $
         $scope.mqttBrokers = MqttBrokersService.getBrokers()
 
         $scope.save = function() {
-            DevicesService.update({system: $currentSystem, name: name}, $scope.device, function() {
+            DevicesService.update({name: name}, $scope.device, function() {
                 $mdDialog.hide($scope.device);
             }, function(r) {
                 alert(r.data.message || "Error");

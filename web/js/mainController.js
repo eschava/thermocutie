@@ -1,14 +1,14 @@
-app.controller('MainController', function ($scope, $timeout, $mdDialog, $currentSystem, CurrentState, DashboardService, DevicesService) {
+app.controller('MainController', function ($scope, $timeout, $mdDialog, CurrentState, DashboardService, DevicesService) {
     $scope.CurrentState = CurrentState;
 
-    $scope.widgets = DashboardService.get({system: $currentSystem})
+    $scope.widgets = DashboardService.get()
     $scope.widgets.$promise.then(function( widgets ) {
         $scope.widgets = widgets; // to work with promise as with array
     });
 
     $scope.saveWidgets = function() {
         if ($scope.widgets.$resolved) { // sometimes callback is called when widgets are not loaded yet
-            DashboardService.update({system: $currentSystem}, $scope.widgets, function() {},
+            DashboardService.update($scope.widgets, function() {},
                 function(r) {
                     alert(r.data.message || "Error");
             });
@@ -132,7 +132,7 @@ app.controller('MainController', function ($scope, $timeout, $mdDialog, $current
         $scope.edit = widget.device != undefined;
         $scope.title = $scope.edit ? "Edit widget" : "Add widget";
         $scope.widget = widget;
-        $scope.devices = DevicesService.getDevicesByType({system: $currentSystem, name: widget.type});
+        $scope.devices = DevicesService.getDevicesByType({name: widget.type});
 
         $scope.save = function() {
             $mdDialog.hide($scope.widget);

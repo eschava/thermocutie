@@ -10,17 +10,15 @@ class DashboardRest(Resource):
         super(DashboardRest, self).__init__()
         self.cutie = kwargs['cutie']
 
-    def get(self, system):
-        system = self.cutie.get_system(system)
-        return json.loads(system.dashboard)
+    def get(self):
+        return json.loads(self.cutie.dashboard)
         # return system.dashboard
 
-    def put(self, system):
-        system = self.cutie.get_system(system)
-        system.dashboard = json.dumps(request.get_json(silent=True), indent=4, sort_keys=True)
+    def put(self):
+        self.cutie.dashboard = json.dumps(request.get_json(silent=True), indent=4, sort_keys=True)
 
     @classmethod
     def register(cls, api, cutie):
         api.add_resource(cls,
-                         cls.url + '/<system>',
+                         cls.url,
                          resource_class_kwargs={'cutie': cutie})

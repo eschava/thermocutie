@@ -1,5 +1,5 @@
-app.controller('TemperatureModeController', function ($scope, $window, $currentSystem, $mdDialog, TemperatureModeService) {
-    $scope.modes = TemperatureModeService.getModes({system: $currentSystem});
+app.controller('TemperatureModeController', function ($scope, $window, $mdDialog, TemperatureModeService) {
+    $scope.modes = TemperatureModeService.getModes();
 
     $scope.back = function() {$window.history.back();}
 
@@ -14,7 +14,7 @@ app.controller('TemperatureModeController', function ($scope, $window, $currentS
           clickOutsideToClose:false
         })
         .then(function(mode) {
-            TemperatureModeService.add({system: $currentSystem}, mode, function() {
+            TemperatureModeService.add(mode, function() {
                 $scope.modes.push(mode);
             }, function(r) {
                 alert(r.data.message || "Error");
@@ -34,7 +34,7 @@ app.controller('TemperatureModeController', function ($scope, $window, $currentS
           skipHide: true
         })
         .then(function(changedMode) {
-            TemperatureModeService.update({system: $currentSystem}, changedMode, function() {
+            TemperatureModeService.update(changedMode, function() {
                 angular.copy(changedMode, mode);
             }, function(r) {
                 alert(r.data.message || "Error");
@@ -51,7 +51,7 @@ app.controller('TemperatureModeController', function ($scope, $window, $currentS
           .cancel('Cancel');
 
         $mdDialog.show(confirm).then(function(newName) {
-            TemperatureModeService.rename({system: $currentSystem, oldName: mode.name, newName: newName}, function() {
+            TemperatureModeService.rename({oldName: mode.name, newName: newName}, function() {
                 mode.name = newName;
             }, function(r) {
               alert(r.data.message || "Error");
@@ -66,7 +66,7 @@ app.controller('TemperatureModeController', function ($scope, $window, $currentS
             .cancel('Cancel');
 
         $mdDialog.show(confirm).then(function() {
-            TemperatureModeService.delete({system: $currentSystem, name: mode.name}, function() {
+            TemperatureModeService.delete({name: mode.name}, function() {
                 $scope.modes.splice($scope.modes.indexOf(mode), 1);
             }, function(r) {
                 alert(r.data.message || "Error");

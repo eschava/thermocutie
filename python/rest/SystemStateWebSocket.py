@@ -3,9 +3,8 @@ import logging
 
 
 class SystemStateWebSocket(object):
-    def __init__(self, cutie, websocket, name):
+    def __init__(self, cutie, websocket):
         self.cutie = cutie
-        self.name = name
         self.websocket = websocket
 
     def send(self, data):
@@ -13,5 +12,5 @@ class SystemStateWebSocket(object):
             self.websocket.send(json.dumps(data))
         except Exception as e:
             logging.warn("Websocket error '%s', unsubscribing device state listener" % str(e))
-            self.cutie.unsubscribe(self.name, self.send)
+            self.cutie.unsubscribe(self.send)
 

@@ -1,53 +1,62 @@
-from collections import OrderedDict
 import os
-import shutil
-
-from .System import System
+from .SystemState import SystemState
+from .SystemSettings import SystemSettings
+from .DeviceSet import DeviceSet
+from .TemperatureModeSet import TemperatureModeSet
+from .ScheduleSet import ScheduleSet
 
 
 class Cutie:
     def __init__(self, folder, mqtt):
         self._folder = folder
         self._mqtt = mqtt
-        self.systems = OrderedDict()
+        self._state = SystemState()
+        self._settings = SystemSettings()
+        self._devices = DeviceSet(os.path.join(folder, 'devices.xml'), mqtt, self._state)
+        self._temperature_modes = TemperatureModeSet(os.path.join(folder, 'temperaturemodes.xml'))
+        self._schedule_set = ScheduleSet(os.path.join(folder, 'schedules.xml'))
 
     def load(self):
-        for name in os.listdir(self._folder):
-            sub_folder = os.path.join(self._folder, name)
-            if os.path.isdir(sub_folder):
-                system = System(self._mqtt, sub_folder, name, '?')
-                system.load()
-                self.systems[system.name] = system
+        self._settings.load(os.path.join(self._folder, 'settings.xml'))
+        self._devices.load()
+        self._temperature_modes.load()
+        self._schedule_set.load()
 
-    def get_systems(self):
-        return self.systems.values()
+    def save(self):
+        self._settings.save(os.path.join(self._folder, 'settings.xml'))
+        self._devices.save()
+        self._temperature_modes.save()
+        self._schedule_set.save()
 
-    def get_system(self, name):
-        return self.systems[name]
+    @property
+    def devices(self):
+        return self._devices
 
-    def add_system(self, name, title):
-        sub_folder = os.path.join(self._folder, name)
-        system = System(self._mqtt, sub_folder, name, title)
-        self.systems[name] = system
-        os.mkdir(sub_folder)
-        system.save()
+    @property
+    def temperature_modes(self):
+        return self._temperature_modes
 
-    def change_system(self, name, title):
-        system = self.systems[name]
-        system.title = title
-        system.save()
+    def get_schedule(self, name):
+        return self._schedule_set.get_schedule(name)
 
-    def delete_system(self, name):
-        del self.systems[name]
-        sub_folder = os.path.join(self._folder, name)
-        shutil.rmtree(sub_folder, ignore_errors=True)
+    def update_schedule(self, schedule_changes):
+        self._schedule_set.update_schedule(schedule_changes)
 
-    def subscribe(self, name, listener):
-        system = self.systems[name]
-        system.subscribe(listener)
+    def subscribe(self, listener):
+        self._state.subscribe(listener)
 
-    def unsubscribe(self, name, listener):
-        system = self.systems[name]
-        system.unsubscribe(listener)
+    def unsubscribe(self, listener):
+        self._state.unsubscribe(listener)
+
+    @property
+    def dashboard(self):
+        with open(os.path.join(self._folder, 'dashboard.json'), 'r') as f:
+            return f.read()
+
+    @dashboard.setter
+    def dashboard(self, value):
+        with open(os.path.join(self._folder, 'dashboard.json'), 'w') as f:
+            f.write(value)
+
 
 

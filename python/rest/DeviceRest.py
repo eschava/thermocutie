@@ -9,37 +9,36 @@ class DeviceRest(Resource):
         super(DeviceRest, self).__init__()
         self.cutie = kwargs['cutie']
 
-    def get(self, system, name=None):
-        system = self.cutie.get_system(system)
+    def get(self, name=None):
+        devices = self.cutie.devices
         if name is None:
             return list(map(
                 lambda device: device.json(),
-                system.devices.list()
+                devices.list()
             ))
         else:  # device by type
             return list(map(
                 lambda device: device.name,
-                system.devices.list_by_type(name)
+                devices.list_by_type(name)
             ))
 
-    def put(self, system, name):
+    def put(self, name):
         content = request.get_json(silent=True)
-        system = self.cutie.get_system(system)
-        devices = system.devices
+        devices = self.cutie.devices
         devices.update(name, content)
 
-    # def post(self, system):
+    # def post(self):
     #     content = request.get_json(silent=True)
-    #     modes = self.cutie.get_system(system).temperature_modes
+    #     modes = self.cutie.temperature_modes
     #     modes.add(content)
     #
-    # def delete(self, system, name):
-    #     modes = self.cutie.get_system(system).temperature_modes
+    # def delete(self, name):
+    #     modes = self.cutie.temperature_modes
     #     modes.delete(name)
 
     @classmethod
     def register(cls, api, cutie):
         api.add_resource(cls,
-                         cls.url + '/<system>',
-                         cls.url + '/<system>/<name>',
+                         cls.url,
+                         cls.url + '/<name>',
                          resource_class_kwargs={'cutie': cutie})

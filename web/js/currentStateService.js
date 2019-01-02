@@ -1,7 +1,6 @@
-app.factory('CurrentState', function($websocket, $location, $currentSystem) {
+app.factory('CurrentState', function($websocket, $location,) {
     // Open a WebSocket connection
     var ws = $websocket('ws://' + $location.host() + ':' + $location.port() + '/state');
-    ws.send($currentSystem); // subscribe to the active system state
 
     var state = [];
 

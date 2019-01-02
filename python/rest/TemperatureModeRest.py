@@ -9,39 +9,38 @@ class TemperatureModeRest(Resource):
         super(TemperatureModeRest, self).__init__()
         self.cutie = kwargs['cutie']
 
-    def get(self, system):
-        system = self.cutie.get_system(system)
+    def get(self):
         return list(map(
             lambda m: {'name': m.name, 'color': m.color, 'icon': m.icon, 'temperature': m.temperature},
-            system.temperature_modes.list()
+            self.cutie.temperature_modes.list()
         ))
 
-    def post(self, system):
+    def post(self):
         content = request.get_json(silent=True)
-        modes = self.cutie.get_system(system).temperature_modes
+        modes = self.cutie.temperature_modes
         modes.add(content)
 
-    def put(self, system, old_name=None, new_name=None):
-        modes = self.cutie.get_system(system).temperature_modes
+    def put(self, old_name=None, new_name=None):
+        modes = self.cutie.temperature_modes
         if old_name is None:
             content = request.get_json(silent=True)
             modes.update(content)
         else:
             modes.rename(old_name, new_name)
 
-    # def put(self, system, old_name, new_name):
+    # def put(self, old_name, new_name):
     #     content = request.get_json(silent=True)
-    #     modes = self.cutie.get_system(system).temperature_modes
+    #     modes = self.cutie.temperature_modes
     #     modes.update(content)
 
-    def delete(self, system, name):
-        modes = self.cutie.get_system(system).temperature_modes
+    def delete(self, name):
+        modes = self.cutie.temperature_modes
         modes.delete(name)
 
     @classmethod
     def register(cls, api, cutie):
         api.add_resource(cls,
-                         cls.url + '/<system>',
-                         cls.url + '/<system>/<name>',
-                         cls.url + '/<system>/rename/<old_name>/<new_name>',
+                         cls.url,
+                         cls.url + '/<name>',
+                         cls.url + '/rename/<old_name>/<new_name>',
                          resource_class_kwargs={'cutie': cutie})

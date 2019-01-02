@@ -1,9 +1,9 @@
 app.factory('TemperatureModeService', function ($resource) {
-    return $resource('/rest/temperaturemode/:system/:name/:action/:oldName/:newName', {}, {
-        getModes: { method: 'GET', isArray: true, params: {system: '@system'} },
-        add:      { method: 'POST', params: {system: '@system'} },
-        update:   { method: 'PUT', params: {system: '@system'} },
-        rename:   { method: 'PUT', params: {system: '@system', action: 'rename', oldName: '@oldName', newName: '@newName'} },
-        delete:   { method: 'DELETE', params: {system: '@system', name: '@name'} }
+    return $resource('/rest/temperaturemode/:name/:action/:oldName/:newName', {}, {
+        getModes: { method: 'GET', isArray: true },
+        add:      { method: 'POST' },
+        update:   { method: 'PUT' },
+        rename:   { method: 'PUT', params: {action: 'rename', oldName: '@oldName', newName: '@newName'} },
+        delete:   { method: 'DELETE', params: {name: '@name'} }
     })
 });
